@@ -1,0 +1,460 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D253CB3524FA4C52AB92A76 /* libPods-phoneBrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA5BD820F2ED8E098C2FD7EB /* libPods-phoneBrowser.a */; };
+		B369DAED208F344F000D7FC9 /* AKZoomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAEB208F344E000D7FC9 /* AKZoomScrollView.m */; };
+		B369DAEF208F35C3000D7FC9 /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAEE208F35C3000D7FC9 /* Config.m */; };
+		B369DAF22090873D000D7FC9 /* UIView+LBFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAF02090873C000D7FC9 /* UIView+LBFrame.m */; };
+		B3B9353D208C37CE00E418DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B9353C208C37CE00E418DC /* AppDelegate.m */; };
+		B3B93540208C37CE00E418DC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B9353F208C37CE00E418DC /* ViewController.m */; };
+		B3B93543208C37CE00E418DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3B93541208C37CE00E418DC /* Main.storyboard */; };
+		B3B93545208C37CE00E418DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B3B93544208C37CE00E418DC /* Assets.xcassets */; };
+		B3B93548208C37CE00E418DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3B93546208C37CE00E418DC /* LaunchScreen.storyboard */; };
+		B3B9354B208C37CE00E418DC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B9354A208C37CE00E418DC /* main.m */; };
+		B3B93553208C384600E418DC /* PhotoBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B93552208C384600E418DC /* PhotoBrowserView.m */; };
+		B3B93557208C3C8E00E418DC /* PhotoBrowserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B93556208C3C8E00E418DC /* PhotoBrowserManager.m */; };
+		B3B9355A208CA5BA00E418DC /* AKPhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B93559208CA5BA00E418DC /* AKPhotoCollectionViewCell.m */; };
+		B3B93560208CDC4300E418DC /* AKTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B9355F208CDC4300E418DC /* AKTapDetectingImageView.m */; };
+		B3B93563208CDD0900E418DC /* AKScrollViewStatusModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B93562208CDD0900E418DC /* AKScrollViewStatusModel.m */; };
+		B3B93566208CE5EC00E418DC /* AKLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B93565208CE5EC00E418DC /* AKLoadingView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B369DAEB208F344E000D7FC9 /* AKZoomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKZoomScrollView.m; sourceTree = "<group>"; };
+		B369DAEC208F344F000D7FC9 /* AKZoomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKZoomScrollView.h; sourceTree = "<group>"; };
+		B369DAEE208F35C3000D7FC9 /* Config.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Config.m; sourceTree = "<group>"; };
+		B369DAF02090873C000D7FC9 /* UIView+LBFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LBFrame.m"; sourceTree = "<group>"; };
+		B369DAF12090873D000D7FC9 /* UIView+LBFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LBFrame.h"; sourceTree = "<group>"; };
+		B3B93538208C37CE00E418DC /* phoneBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = phoneBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3B9353B208C37CE00E418DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B3B9353C208C37CE00E418DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B3B9353E208C37CE00E418DC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		B3B9353F208C37CE00E418DC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		B3B93542208C37CE00E418DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B3B93544208C37CE00E418DC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B3B93547208C37CE00E418DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B3B93549208C37CE00E418DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B3B9354A208C37CE00E418DC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B3B93551208C384600E418DC /* PhotoBrowserView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoBrowserView.h; sourceTree = "<group>"; };
+		B3B93552208C384600E418DC /* PhotoBrowserView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserView.m; sourceTree = "<group>"; };
+		B3B93554208C3B6300E418DC /* Config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
+		B3B93555208C3C8E00E418DC /* PhotoBrowserManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoBrowserManager.h; sourceTree = "<group>"; };
+		B3B93556208C3C8E00E418DC /* PhotoBrowserManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoBrowserManager.m; sourceTree = "<group>"; };
+		B3B93558208CA5BA00E418DC /* AKPhotoCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKPhotoCollectionViewCell.h; sourceTree = "<group>"; };
+		B3B93559208CA5BA00E418DC /* AKPhotoCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKPhotoCollectionViewCell.m; sourceTree = "<group>"; };
+		B3B9355E208CDC4300E418DC /* AKTapDetectingImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKTapDetectingImageView.h; sourceTree = "<group>"; };
+		B3B9355F208CDC4300E418DC /* AKTapDetectingImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKTapDetectingImageView.m; sourceTree = "<group>"; };
+		B3B93561208CDD0900E418DC /* AKScrollViewStatusModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKScrollViewStatusModel.h; sourceTree = "<group>"; };
+		B3B93562208CDD0900E418DC /* AKScrollViewStatusModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKScrollViewStatusModel.m; sourceTree = "<group>"; };
+		B3B93564208CE5EC00E418DC /* AKLoadingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKLoadingView.h; sourceTree = "<group>"; };
+		B3B93565208CE5EC00E418DC /* AKLoadingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKLoadingView.m; sourceTree = "<group>"; };
+		BA5BD820F2ED8E098C2FD7EB /* libPods-phoneBrowser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-phoneBrowser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8DD7EC0C1AEA34C0408D334 /* Pods-phoneBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-phoneBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-phoneBrowser/Pods-phoneBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		F15F77D4E1CF7C895ABBF51E /* Pods-phoneBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-phoneBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-phoneBrowser/Pods-phoneBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B3B93535208C37CE00E418DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D253CB3524FA4C52AB92A76 /* libPods-phoneBrowser.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3C5DE2FA4CBEAF35B30D69B3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BA5BD820F2ED8E098C2FD7EB /* libPods-phoneBrowser.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6E41893F3712DE9ADB59C108 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F15F77D4E1CF7C895ABBF51E /* Pods-phoneBrowser.debug.xcconfig */,
+				D8DD7EC0C1AEA34C0408D334 /* Pods-phoneBrowser.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B3B9352F208C37CD00E418DC = {
+			isa = PBXGroup;
+			children = (
+				B3B9353A208C37CE00E418DC /* phoneBrowser */,
+				B3B93539208C37CE00E418DC /* Products */,
+				6E41893F3712DE9ADB59C108 /* Pods */,
+				3C5DE2FA4CBEAF35B30D69B3 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B3B93539208C37CE00E418DC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B3B93538208C37CE00E418DC /* phoneBrowser.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B3B9353A208C37CE00E418DC /* phoneBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				B3B9353B208C37CE00E418DC /* AppDelegate.h */,
+				B3B9353C208C37CE00E418DC /* AppDelegate.m */,
+				B3B9353E208C37CE00E418DC /* ViewController.h */,
+				B3B9353F208C37CE00E418DC /* ViewController.m */,
+				B3B93551208C384600E418DC /* PhotoBrowserView.h */,
+				B3B93552208C384600E418DC /* PhotoBrowserView.m */,
+				B3B93564208CE5EC00E418DC /* AKLoadingView.h */,
+				B3B93565208CE5EC00E418DC /* AKLoadingView.m */,
+				B3B93558208CA5BA00E418DC /* AKPhotoCollectionViewCell.h */,
+				B3B93559208CA5BA00E418DC /* AKPhotoCollectionViewCell.m */,
+				B369DAEC208F344F000D7FC9 /* AKZoomScrollView.h */,
+				B369DAEB208F344E000D7FC9 /* AKZoomScrollView.m */,
+				B3B93555208C3C8E00E418DC /* PhotoBrowserManager.h */,
+				B3B93556208C3C8E00E418DC /* PhotoBrowserManager.m */,
+				B3B9355E208CDC4300E418DC /* AKTapDetectingImageView.h */,
+				B3B9355F208CDC4300E418DC /* AKTapDetectingImageView.m */,
+				B3B93561208CDD0900E418DC /* AKScrollViewStatusModel.h */,
+				B3B93562208CDD0900E418DC /* AKScrollViewStatusModel.m */,
+				B3B93554208C3B6300E418DC /* Config.h */,
+				B369DAEE208F35C3000D7FC9 /* Config.m */,
+				B369DAF12090873D000D7FC9 /* UIView+LBFrame.h */,
+				B369DAF02090873C000D7FC9 /* UIView+LBFrame.m */,
+				B3B93541208C37CE00E418DC /* Main.storyboard */,
+				B3B93544208C37CE00E418DC /* Assets.xcassets */,
+				B3B93546208C37CE00E418DC /* LaunchScreen.storyboard */,
+				B3B93549208C37CE00E418DC /* Info.plist */,
+				B3B9354A208C37CE00E418DC /* main.m */,
+			);
+			path = phoneBrowser;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B3B93537208C37CE00E418DC /* phoneBrowser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B3B9354E208C37CE00E418DC /* Build configuration list for PBXNativeTarget "phoneBrowser" */;
+			buildPhases = (
+				9241B5786AC4F2C10A861EF5 /* [CP] Check Pods Manifest.lock */,
+				B3B93534208C37CE00E418DC /* Sources */,
+				B3B93535208C37CE00E418DC /* Frameworks */,
+				B3B93536208C37CE00E418DC /* Resources */,
+				9C310F303D8308F65AD314D0 /* [CP] Embed Pods Frameworks */,
+				273E5CF28C52A13A0151E073 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = phoneBrowser;
+			productName = phoneBrowser;
+			productReference = B3B93538208C37CE00E418DC /* phoneBrowser.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B3B93530208C37CD00E418DC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "阿K";
+				TargetAttributes = {
+					B3B93537208C37CE00E418DC = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B3B93533208C37CD00E418DC /* Build configuration list for PBXProject "phoneBrowser" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B3B9352F208C37CD00E418DC;
+			productRefGroup = B3B93539208C37CE00E418DC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B3B93537208C37CE00E418DC /* phoneBrowser */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B3B93536208C37CE00E418DC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B3B93548208C37CE00E418DC /* LaunchScreen.storyboard in Resources */,
+				B3B93545208C37CE00E418DC /* Assets.xcassets in Resources */,
+				B3B93543208C37CE00E418DC /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		273E5CF28C52A13A0151E073 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-phoneBrowser/Pods-phoneBrowser-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9241B5786AC4F2C10A861EF5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		9C310F303D8308F65AD314D0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-phoneBrowser/Pods-phoneBrowser-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B3B93534208C37CE00E418DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B369DAF22090873D000D7FC9 /* UIView+LBFrame.m in Sources */,
+				B3B93540208C37CE00E418DC /* ViewController.m in Sources */,
+				B3B93566208CE5EC00E418DC /* AKLoadingView.m in Sources */,
+				B3B9354B208C37CE00E418DC /* main.m in Sources */,
+				B3B93563208CDD0900E418DC /* AKScrollViewStatusModel.m in Sources */,
+				B3B93560208CDC4300E418DC /* AKTapDetectingImageView.m in Sources */,
+				B3B93553208C384600E418DC /* PhotoBrowserView.m in Sources */,
+				B369DAED208F344F000D7FC9 /* AKZoomScrollView.m in Sources */,
+				B3B9355A208CA5BA00E418DC /* AKPhotoCollectionViewCell.m in Sources */,
+				B369DAEF208F35C3000D7FC9 /* Config.m in Sources */,
+				B3B93557208C3C8E00E418DC /* PhotoBrowserManager.m in Sources */,
+				B3B9353D208C37CE00E418DC /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B3B93541208C37CE00E418DC /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B3B93542208C37CE00E418DC /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B3B93546208C37CE00E418DC /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B3B93547208C37CE00E418DC /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B3B9354C208C37CE00E418DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B3B9354D208C37CE00E418DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B3B9354F208C37CE00E418DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F15F77D4E1CF7C895ABBF51E /* Pods-phoneBrowser.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RU3394QL8C;
+				INFOPLIST_FILE = phoneBrowser/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Encore.phoneBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B3B93550208C37CE00E418DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D8DD7EC0C1AEA34C0408D334 /* Pods-phoneBrowser.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RU3394QL8C;
+				INFOPLIST_FILE = phoneBrowser/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = Encore.phoneBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B3B93533208C37CD00E418DC /* Build configuration list for PBXProject "phoneBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3B9354C208C37CE00E418DC /* Debug */,
+				B3B9354D208C37CE00E418DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B3B9354E208C37CE00E418DC /* Build configuration list for PBXNativeTarget "phoneBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B3B9354F208C37CE00E418DC /* Debug */,
+				B3B93550208C37CE00E418DC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B3B93530208C37CD00E418DC /* Project object */;
+}
