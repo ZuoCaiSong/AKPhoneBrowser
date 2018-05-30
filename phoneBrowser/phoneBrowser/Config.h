@@ -22,6 +22,9 @@ UIKIT_EXTERN NSString * const AKImageViewWillDismissNoti ;
 UIKIT_EXTERN NSString * const AKImageViewDidDismissNoti ;
 UIKIT_EXTERN NSString * const AKGifImageDownloadFinishedNoti;
 
+UIKIT_EXTERN  NSString * const AKLinkageInfoStyleKey ;
+UIKIT_EXTERN  NSString * const AKLinKageInfoReuseIdentifierKey;
+
 /**一个弱引用对象*/
 #define weak_self  __weak typeof(self) wself = self
 

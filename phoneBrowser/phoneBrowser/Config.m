@@ -19,4 +19,7 @@ NSString * const AKImageViewWillDismissNoti = @"AKImageViewWillDismissNoti";
 NSString * const AKImageViewDidDismissNoti = @"AKImageViewDidDismissNoti";
 NSString * const AKGifImageDownloadFinishedNoti = @"AKGifImageDownloadFinishedNoti";
 
+NSString * const AKLinkageInfoStyleKey = @"ak_style";
+NSString * const AKLinKageInfoReuseIdentifierKey = @"ak_reuseIdentifier";
+
 #endif

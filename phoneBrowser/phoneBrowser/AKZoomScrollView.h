@@ -16,6 +16,8 @@
 
 @interface AKZoomScrollView : UIScrollView
 
+
+
 /**展示的图片*/
 @property(nonatomic,strong) AKTapDetectingImageView *  imageView;
 

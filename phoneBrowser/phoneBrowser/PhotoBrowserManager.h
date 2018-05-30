@@ -10,6 +10,13 @@
 
 @interface PhotoBrowserManager : NSObject
 
+/**展示图片使用collectionView*/
+
+@property(nonatomic,weak)UICollectionView  *currentCollectionView;
+
+/**传入imageView的frames*/
+@property(nonatomic,strong)NSMutableArray <NSValue *> * frames;
+
 /** 当前选中的页 */
 @property (nonatomic , assign)NSInteger currentPage;
 
@@ -18,6 +25,15 @@
 
 /**每张正在加载图片的占位图的大小*/
 @property(nonatomic,copy,readonly) CGSize (^ placeholdImageSizeBlock)(UIImage * Image,NSIndexPath * indexPath) ;
+
+/**传入的imageView的共同父View*/
+@property(nonatomic,weak,readonly)UIView  *imageViewSuperView;
+
+/**关于联动的信息*/
+@property(nonatomic,strong)NSMutableDictionary  *linkageInfo;
+
+/**当图片加载出现错误时候显示的图片  default is [UIImage imageNamed:@"LBLoadError.png"]*/
+@property(nonatomic,strong)UIImage  *errorImage; //如果LBLoadError.png这张图片不满意 可以修改这个属性替换
 
 /**
  返回一个单利

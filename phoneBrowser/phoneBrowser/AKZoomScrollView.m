@@ -31,7 +31,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 @property(nonatomic,assign) CGSize  imageSize ;
 
 /**原来的farme*/
-@property(nonatomic,assign)CGSize oldFrame;
+@property(nonatomic,assign)CGRect oldFrame;
 
 @property (nonatomic , strong)AKLoadingView *loadingView;
 
@@ -123,9 +123,13 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
             //不明白,为何要动态修改frame
             self.imageView.frame = moveSizeToCenter(size);
         }else{
-            [self resetScrollViewStatusWithImage:model.currentPageImageView];
+            [self resetScrollViewStatusWithImage:[self getPlaceholdImageForModel:model]];
             
         }
+        
+        self.imageView.image = [self getPlaceholdImageForModel:model];
+        
+        //通过模型开始加载数据
         
     }
     
@@ -141,8 +145,42 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     }
 }
 
-#pragma mark - 移除一个CAlayer 动画
+#pragma mark - 动画
 
+- (void)addFadeAnimationWithDuration:(NSTimeInterval)duration curve:(UIViewAnimationCurve)curve ForLayer:(CALayer *)layer{
+    if(duration <= 0) return;
+    
+    NSString *mediaFuncton;
+    switch (curve) {
+        case UIViewAnimationCurveEaseInOut:
+            mediaFuncton = kCAMediaTimingFunctionEaseInEaseOut;
+            break;
+        case UIViewAnimationCurveEaseIn:
+            mediaFuncton = kCAMediaTimingFunctionEaseIn;
+            break;
+        case UIViewAnimationCurveEaseOut:
+            mediaFuncton = kCAMediaTimingFunctionEaseOut;
+            break;
+        case UIViewAnimationCurveLinear:
+            mediaFuncton = kCAMediaTimingFunctionLinear;
+            break;
+        default:
+            mediaFuncton = kCAMediaTimingFunctionLinear;
+            break;
+    }
+    CATransition * transition = [CATransition animation];
+    transition.duration = duration;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:mediaFuncton];
+    transition.type = kCATransitionFade;
+    [layer addAnimation:transition forKey:@"ak.fade"];
+}
+
+
+/**
+  移除一个CAlayer动画
+
+ @param layer 移除layer上与之对应的key动画
+ */
 - (void)removePreviousFadeAnimationForLayer:(CALayer *)layer{
     [layer removeAnimationForKey:@"ak.fade"];
 }
@@ -179,9 +217,141 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     }
 }
 
+#pragma mark - scrollView delegate
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.imageView;
+}
 
--(void)handleSingleTap:(CGPoint)touchPoint{
+-(void)scrollViewDidZoom:(UIScrollView *)scrollView{
+    
+    if (self.model.isShowing == false) {
+        return;
+    }
+    self.model.scale = @(scrollView.zoomScale);
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
     
 }
 
+-(void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale{
+    if (scrollView.minimumZoomScale != scale) {
+        return;
+    }
+    [self setZoomScale:self.minimumZoomScale animated:true];
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if (self.model.isShowing == false) {
+        return;
+    }
+    self.model.contentOffset = scrollView.contentOffset;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    if (self.imageView.height> ScreenW) {
+        [[PhotoBrowserManager defaultManager].currentCollectionView
+         scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.model.index inSection:0]
+         atScrollPosition:UICollectionViewScrollPositionNone animated:true];
+    }
+}
+
+#pragma mark - imageView 点击事件的的处理方法
+
+
+/**
+ 单击事件 ,将图片remove掉
+
+ @param touchPoint 手指触碰的点
+ */
+-(void)handleSingleTap:(CGPoint)touchPoint{
+    //1.先判定是否有loading视图
+    if(_loadingView){
+        [_loadingView removeFromSuperview];
+    }
+    
+    if([[PhotoBrowserManager defaultManager].imageViewSuperView isKindOfClass:[UICollectionView class]]){
+        [self configCollectionViewAnimationStyle];
+    }
+    
+    //2.发布一个将要dismiss的通知
+    [[NSNotificationCenter defaultCenter]postNotificationName:AKImageViewWillDismissNoti object:nil];
+    PhotoBrowserManager *mgr = [PhotoBrowserManager defaultManager];
+    
+    CGRect currentViewFrame = [mgr.frames[mgr.currentPage] CGRectValue];
+    
+    //3 currentViewFrame的值在以keyWindow作为参考时 对应的frame
+    self.oldFrame = [mgr.imageViewSuperView convertRect:currentViewFrame toView:[UIApplication sharedApplication].keyWindow];
+    
+    //4 正在moveing
+    UIImageView * dismissView = self.imageView;
+    self.imageViewIsMoving = true;
+    weak_self;
+    [UIView animateWithDuration:0.2 animations:^{
+        wself.zoomScale = scrollViewMinZoomScale;
+        wself.contentOffset = CGPointZero;
+        dismissView.frame = wself.oldFrame; //关键是这个,看上去图片缩小,图片回到了对应的cell图片上面
+        dismissView.contentMode = UIViewContentModeScaleAspectFill;
+        dismissView.clipsToBounds = true;
+        if (wself.model.currentPageImage.images.count > 0) {
+            dismissView.image = wself.model.currentPageImage;
+        }
+        //改变背景颜色
+        [PhotoBrowserManager defaultManager].currentCollectionView.superview.backgroundColor = [UIColor clearColor];
+    } completion:^(BOOL finished) {
+        //动画完成之后,在进行一个动画
+        [UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+            wself.imageView.alpha = 0;
+        } completion:^(BOOL finished) {
+            [dismissView removeFromSuperview];
+            [wself removeFromSuperview];
+            //已经dismiss的通知
+            [[NSNotificationCenter defaultCenter]postNotificationName:AKImageViewDidDismissNoti object:nil];
+        }];
+    }];
+}
+
+/**
+ 双击事件 ,将图片remove掉
+ 
+ @param touchPoint 手指触碰的点
+ */
+-(void)handleDoubleTap:(CGPoint)touchPoint{
+    if(self.maximumZoomScale == self.minimumZoomScale){return;}
+    
+    if (self.zoomScale != self.minimumZoomScale) { //有被放大
+        [self setZoomScale:self.minimumZoomScale animated:true];
+    }else{ //没有被放大,则进行放大
+        CGFloat newZoomScale = self.maximumZoomScale;
+        CGFloat width = self.width / newZoomScale;
+        CGFloat height = self.height / newZoomScale;
+        //将内容视图缩放到指定的Rect中
+        [self zoomToRect:CGRectMake(touchPoint.x - width/2, touchPoint.y - height/2, width, height) animated:true];
+    }
+}
+
+
+#pragma mark - collectionView 特有的动画
+- (void)configCollectionViewAnimationStyle{
+    //1 取出关联数据
+    NSDictionary * info = [PhotoBrowserManager defaultManager].linkageInfo;
+    NSString * reuseIdentifier = info[AKLinKageInfoReuseIdentifierKey];
+    
+    NSAssert(!reuseIdentifier, @"请设置传入collectionViewCell的reuseIdentifier");
+     
+    //2 获取style
+    NSUInteger style = info[AKLinkageInfoStyleKey] ? UICollectionViewScrollPositionCenteredHorizontally : [info[AKLinkageInfoStyleKey] unsignedIntValue];
+    
+    UICollectionView *collectionView = (UICollectionView *)[PhotoBrowserManager defaultManager].imageViewSuperView;
+    
+    NSIndexPath * index = [NSIndexPath indexPathForItem:[PhotoBrowserManager defaultManager].currentPage inSection:0];
+    [collectionView scrollToItemAtIndexPath:index atScrollPosition:style animated:false];
+    
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:index];
+    NSValue *value = [NSValue valueWithCGRect:cell.frame];
+    
+    //重新给cell赋值
+    [[PhotoBrowserManager defaultManager].frames replaceObjectAtIndex:index.row withObject:value];
+}
 @end
