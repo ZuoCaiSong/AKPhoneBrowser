@@ -9,7 +9,7 @@
 #import "PhotoBrowserManager.h"
 
 static inline PhotoBrowserManager * getPhotoBrowserManager(){
-    return PhotoBrowserManager
+    return PhotoBrowserManager.defaultManager ;
 }
 
 static PhotoBrowserManager * mgr = nil;
