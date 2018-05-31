@@ -44,16 +44,16 @@
             wself.operation = nil;
             if (wself.loadImageCompletedBlock) {
                 wself.loadImageCompletedBlock(wself, image, data, error, finished, imageURL);
-            }else{
-                if (error) {
-                    hasDownImage = [PhotoBrowserManager  defaultManager].errorImage;
-                }
+            }
+            if (error) {
+                hasDownImage = [PhotoBrowserManager  defaultManager].errorImage;
                 //更新当前model图片的数据
                 wself.currentPageImage = hasDownImage;
+            }
 //                if (hasDownImage.images.count > 0) {
 //                    wself.currentPageImage = [PhotoBrowserManager defaultManager].l
 //                }
-            }
+            
         });
     }];
 }

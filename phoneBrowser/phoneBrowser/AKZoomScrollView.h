@@ -35,4 +35,14 @@
  */
 -(void)handleSingleTap:(CGPoint)touchPoint;
 
+
+/**
+ 双击图片时的手势方法
+ 
+ @param touchPoint 触摸
+ */
+-(void)handleDoubleTap:(CGPoint)touchPoint;
+
+
+- (void)startPopAnimationWithModel:(AKScrollViewStatusModel *)model completionBlock:(void(^)(void))completion;
 @end

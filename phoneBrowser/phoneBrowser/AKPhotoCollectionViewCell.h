@@ -15,4 +15,16 @@
 /**scrollview,用于放大缩小图片*/
 @property(nonatomic,strong) AKZoomScrollView  * zoomScrollView ;
 
+/**数据模型*/
+@property(nonatomic,strong)AKScrollViewStatusModel  * model;
+
+
+/**
+ cell上面图片弹出的动画
+
+ @param model 数据模型
+ @param completion 完成的回调
+ */
+- (void)startPopAnimationWithModel:(AKScrollViewStatusModel *)model completionBlock:(void(^)(void))completion;
+
 @end

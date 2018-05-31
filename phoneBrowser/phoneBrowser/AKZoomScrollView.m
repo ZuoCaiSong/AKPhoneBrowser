@@ -33,6 +33,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 /**原来的farme*/
 @property(nonatomic,assign)CGRect oldFrame;
 
+/***/
 @property (nonatomic , strong)AKLoadingView *loadingView;
 
 @end
@@ -131,19 +132,110 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         
         //通过模型开始加载数据
         
+        [model loadImageWithCompletedBlock:^(AKScrollViewStatusModel *loadModel, UIImage *image, NSData *data, NSError *error, BOOL finished, NSURL *imageURL) { //图片下载完成的回调
+            //1.移除loading图
+            [wself.loadingView removeFromSuperview];
+            wself.maximumZoomScale = scrollViewMaxZoomScale;
+            if (error) {
+                image = mgr.errorImage;
+            }
+            model.currentPageImage = image;
+            
+            //下载完成之后,只有当前cell正在展示 ---> 刷新
+            NSArray * cells = [mgr.currentCollectionView visibleCells];
+            for (id obj in cells) {
+                AKScrollViewStatusModel *visibleModel = [obj valueForKey:@"model"];
+                if (model.index == visibleModel.index) {
+                    [wself reloadCellDataWithModel:model andImage:image andImageData:data];
+                }
+            }
+        }];
+    }else{
+        if (_loadingView) {
+            [_loadingView removeFromSuperview];
+        }
+        [self resetScrollViewStatusWithImage:model.currentPageImage];
+        /**
+         when lowGifMemory = NO,if not clear this image ,gif image may have some thing wrong
+         */
+        self.imageView.image = nil;
+        self.imageView.image = model.currentPageImage;
+        self.maximumZoomScale = scrollViewMaxZoomScale;
     }
+    self.zoomScale = model.scale.floatValue;
+    self.contentOffset = model.contentOffset;
     
 }
 
-#pragma mark - 适配ios11 的inset
--(void)adjustIOS11{
-    /*适配 iPhone X*/
-    if(@available(iOS 11.0, *)){
-        if (self.contentInsetAdjustmentBehavior == UIScrollViewContentInsetAdjustmentAutomatic) {
-            self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        }
+#pragma mark - cho
+-(void) reloadCellDataWithModel:(AKScrollViewStatusModel *)model andImage:(UIImage*)image andImageData:(NSData *)data{
+    
+    PhotoBrowserManager * mgr = [PhotoBrowserManager defaultManager];
+    self.imageView.image = model.currentPageImage;
+    
+    //重置scrollview的状态
+    [self resetScrollViewStatusWithImage:model.currentPageImage];
+    
+    //获取展位图的大小
+    CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock([self getPlaceholdImageForModel:model], [NSIndexPath indexPathForItem:model.index inSection:0]) : CGSizeZero;
+    
+    if(!CGSizeEqualToSize(size, CGSizeZero)){ //不为0
+        CGRect imageViewFrame = self.imageView.frame;
+        self.imageView.frame = moveSizeToCenter(size);
+        [UIView animateWithDuration:0.25 animations:^{
+            self.imageView.frame = imageViewFrame;
+        }];
+    }else{ //占位图size 为 0
+        [self addFadeAnimationWithDuration:0.25 curve:UIViewAnimationCurveLinear ForLayer:self.imageView.layer];
     }
+
 }
+
+#pragma mark - 开始pop动画
+- (void)startPopAnimationWithModel:(AKScrollViewStatusModel *)model completionBlock:(void (^)(void))completion{
+    UIImage * currentImage = model.currentPageImage;
+    _model = model;
+    if(!currentImage){
+        currentImage = [self getPlaceholdImageForModel:model];
+    }
+    [self showPopAnimationWithImage:currentImage WithCompletionBlock:completion];
+}
+
+- (void)showPopAnimationWithImage:(UIImage *)image WithCompletionBlock:(void (^)(void))completion {
+    weak_self;
+    PhotoBrowserManager *mgr = [PhotoBrowserManager defaultManager];
+    //读取图片最开始的frame值,例如九宫格中某一张图片的frame
+    CGRect animationViewFrame = [mgr.frames[mgr.currentPage]  CGRectValue];
+    CGRect rect = [mgr.imageViewSuperView convertRect: animationViewFrame toView:[UIApplication sharedApplication].keyWindow];
+    self.oldFrame = rect;
+    CGRect photoImageViewFrame;
+    //获取展位图的size
+    CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock(image, [NSIndexPath indexPathForItem:self.model.index inSection:0]) : CGSizeZero;
+    if (!CGSizeEqualToSize(size, CGSizeZero) && !self.model.currentPageImage) {//展位图的size不为0
+        photoImageViewFrame = moveSizeToCenter(size);
+    }else {
+        [self resetScrollViewStatusWithImage:image];
+        photoImageViewFrame = self.imageView.frame;
+    }
+    //正在移动的状态
+    self.imageViewIsMoving = true;
+    self.imageView.frame = self.oldFrame;
+    [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
+        wself.imageView.frame = photoImageViewFrame; //可以理解为一个变大的动画
+    } completion:^(BOOL finished) {
+        wself.imageViewIsMoving = false;
+        [wself layoutSubviews]; // sometime need layout
+        if (completion) {
+            completion();
+        }
+    }];
+    
+    // if not clear this image ,gif image may have some thing wrong
+    self.imageView.image = nil;
+    self.imageView.image = image;
+    [self setNeedsLayout];
+}
+
 
 #pragma mark - 动画
 
@@ -353,5 +445,16 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     
     //重新给cell赋值
     [[PhotoBrowserManager defaultManager].frames replaceObjectAtIndex:index.row withObject:value];
+}
+
+
+#pragma mark - 适配ios11 的inset
+-(void)adjustIOS11{
+    /*适配 iPhone X*/
+    if(@available(iOS 11.0, *)){
+        if (self.contentInsetAdjustmentBehavior == UIScrollViewContentInsetAdjustmentAutomatic) {
+            self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        }
+    }
 }
 @end

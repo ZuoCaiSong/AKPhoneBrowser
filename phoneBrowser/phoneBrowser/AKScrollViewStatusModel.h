@@ -31,9 +31,6 @@
 /***/
 @property(nonatomic,assign)BOOL showPopAnimation;
 
-/**图片下标*/
-@property(nonatomic,assign)int index;
-
 /**是否是gif*/
 @property(nonatomic,assign)BOOL isGif;
 
@@ -43,7 +40,13 @@
 /**当前imageView*/
 @property(nonatomic,assign) UIImageView*  currentPageImageView ;
 
+/**图片下标*/
+@property(nonatomic,assign)int index;
+
 /**图片下载完成的回调*/
 @property (nonatomic , copy)void (^loadImageCompletedBlock)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL);
+
+
+- (void)loadImageWithCompletedBlock:(void (^)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL))completedBlock;
 
 @end
