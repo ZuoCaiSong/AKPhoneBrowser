@@ -55,7 +55,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 - (AKLoadingView *)loadingView {
     if (!_loadingView) {
         AKLoadingView *loadingView = [[AKLoadingView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-        loadingView.frame = moveSizeToCenter(loadingView.frame.size);
+        loadingView.frame = moveSizeToCenter(loadingView.frame.size);//居中显示
         [self addSubview:loadingView];
         _loadingView = loadingView;
     }
@@ -112,7 +112,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         //1 .适配 iPhone X
         [self adjustIOS11];
         
-        //2 . loading 框
+        //2 . add loading 框
         [self loadingView];
         
         //3.重新赋值
@@ -150,7 +150,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
                 }
             }
         }];
-    }else{
+    }else{ //已经存在了
         if (_loadingView) {
             [_loadingView removeFromSuperview];
         }
@@ -236,6 +236,26 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     [self setNeedsLayout];
 }
 
+-(void)layoutSubviews{
+    [super layoutSubviews];
+    
+    //图片在移动的时候停止居中布局
+    if(self.imageViewIsMoving == true)return;
+    
+    CGSize boundsSize = self.bounds.size;
+    CGRect frameToCenter = self.imageView.frame;
+   
+    // x
+    frameToCenter.origin.x = (frameToCenter.size.width < boundsSize.width)? (boundsSize.width - frameToCenter.size.width)/2.0 : 0;
+    
+    // y
+    frameToCenter.origin.y = (frameToCenter.size.height < boundsSize.height)? (boundsSize.height - frameToCenter.size.height)/2.0 : 0;
+  
+    // frame
+    self.imageView.frame =  !CGRectEqualToRect(self.imageView.frame, frameToCenter) ? frameToCenter :self.imageView.frame ;
+}
+
+
 
 #pragma mark - 动画
 
@@ -281,6 +301,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 #pragma mark - 重置scrollviewStatus
 -(void)resetScrollViewStatusWithImage:(UIImage *)image {
     
+    //将缩放设置为初始化状态
     self.zoomScale = scrollViewMinZoomScale;
     
     self.imageView.frame = CGRectMake(0, 0, self.frame.size.width, 0);
@@ -405,16 +426,18 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 }
 
 /**
+ 实现逻辑: 处于放大状态则双击复原,否则则放大
  双击事件 ,将图片remove掉
  
  @param touchPoint 手指触碰的点
+ 
  */
 -(void)handleDoubleTap:(CGPoint)touchPoint{
     if(self.maximumZoomScale == self.minimumZoomScale){return;}
     
-    if (self.zoomScale != self.minimumZoomScale) { //有被放大
+    if (self.zoomScale != self.minimumZoomScale) { //有被放大,则复原
         [self setZoomScale:self.minimumZoomScale animated:true];
-    }else{ //没有被放大,则进行放大
+    }else{ //初始状态,  则进行放大
         CGFloat newZoomScale = self.maximumZoomScale;
         CGFloat width = self.width / newZoomScale;
         CGFloat height = self.height / newZoomScale;
