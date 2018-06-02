@@ -8,9 +8,14 @@
 
 #import "PhotoBrowserView.h"
 
+#import "PhotoBrowserManager.h"
+
 #import "AKPhotoCollectionViewCell.h" //控制器的cell
 
 #import "Config.h" //配置文件
+
+#import <SDWebImage/SDImageCache.h> //缓存
+#import <SDWebImage/SDWebImageManager.h> //管理
 
 /**item的左右多出10,用作间隔*/
 static CGFloat const itemSpace = 20.0;
@@ -20,6 +25,7 @@ static CGFloat const itemSpace = 20.0;
 /**用于图片横向滚动的容器*/
 @property (nonatomic , weak)UICollectionView *collectionView;
 
+/**collectionView的数据源*/
 @property (nonatomic , strong)NSMutableArray *dataArr;
 
 @property (nonatomic , strong)NSMutableArray *models;
@@ -37,6 +43,8 @@ static CGFloat const itemSpace = 20.0;
 @property (nonatomic , assign)CGPoint startCenter;
 
 @property (nonatomic , strong)NSMutableDictionary *loadingImageModelDic;
+
+/**预加载*/
 @property (nonatomic , strong)NSMutableDictionary *preloadingModelDic;
 
 /**预加载队列*/
@@ -225,12 +233,132 @@ static CGFloat const itemSpace = 20.0;
     }];
 }
 
+
 #pragma mark - 通知方法
+/**将要dismiss时候调用*/
 -(void)removePageControl{
+    [UIView animateWithDuration:0.25 animations:^{
+        self.pageControl.alpha = 0;
+    }completion:^(BOOL finished) {
+        [self.pageControl removeFromSuperview];
+    }];
+    if (![PhotoBrowserManager defaultManager].needPreloading) { return;}
+}
+
+#pragma mark - collectionView的数据源&代理
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    if (_dataArr) {
+        return _dataArr.count;
+    }
+    return 0;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *ID = NSStringFromClass([AKPhotoCollectionViewCell class]);
+    AKPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:ID forIndexPath:indexPath];
+    return cell;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return CGSizeMake(ScreenW + itemSpace, ScreenH);
+}
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(AKPhotoCollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
+    weak_self;
+    //获取数据模型
+    AKScrollViewStatusModel * model = self.models[indexPath.row];
+    
+    model.currentPageImage = model.currentPageImage ?: [self getCacheImageForModel:model];
+    //需要展示动画的话,展示动画
+    if(model.showPopAnimation){
+        [cell startPopAnimationWithModel:model completionBlock:^{
+            wself.isShowing = true;
+            model.showPopAnimation = false;
+            //递归调用一次
+            [wself collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+        }];
+    }
+    if (wself.isShowing == false) { return;}
+    //赋值模型
+    cell.model = model;
+    
+    if (model.currentPageImage && model.currentPageImage.images.count >0) {
+        [self scrollViewDidScroll:collectionView];
+    }
+    
+    if ([self.dataArr.firstObject isKindOfClass:[UIImage class]]) return;
+    
+    //预加载
+    [self preloadImageWithModel:model];
+}
+
+
+
+#pragma mark - 预加载图片
+/**只提前加载前后两张图片*/
+-(void)preloadImageWithModel:(AKScrollViewStatusModel *)model{
+    weak_self;
+    //不需要预加载直接return
+    if (![PhotoBrowserManager defaultManager].needPreloading) return;
+    //异步并发队列
+    dispatch_async(self.preloadingQueue, ^{
+        int leftIndex = model.index -1>=0 ?  model.index -1 : 0;
+        int rightIndex = model.index + 1 < wself.models.count ? model.index+1 :  (int)(wself.models.count - 1) ;
+        
+        //wself.loadingImageModels 新计算出的需要加载的 -- > 如果个原来的没有重合的 --> 取消
+        [wself.preloadingModelDic removeAllObjects];
+        wself.preloadingModelDic[@(leftIndex)] = @1;
+        wself.preloadingModelDic[@(model.index)] = @1;
+        wself.preloadingModelDic[@(rightIndex)] = @1;
+        
+        for (NSNumber * indexNum in wself.preloadingModelDic.allKeys) {
+            AKScrollViewStatusModel * loadingModel = wself.loadingImageModelDic[indexNum];
+            if (loadingModel.operation) {
+                [loadingModel.operation cancel];
+                loadingModel.operation = nil;
+            }
+        }
+        [wself.loadingImageModelDic removeAllObjects];
+        
+        for (int i = leftIndex; i<=rightIndex; i++) {
+            AKScrollViewStatusModel * loadingModel = self.models[i];
+            wself.loadingImageModelDic[@(i)] = loadingModel;
+            if (model.index == i) continue;
+            //预加载部分
+            AKScrollViewStatusModel *preloadingModel = wself.models[i];
+            preloadingModel.currentPageImage = preloadingModel.currentPageImage ?:[wself getCacheImageForModel:preloadingModel];
+            if (preloadingModel.currentPageImage) continue;
+            [preloadingModel downloadImage];
+        }
+    });
     
 }
 
 
+
+#pragma mark - 根据URL获取缓存的图片
+
+- (UIImage *)getCacheImageForModel:(AKScrollViewStatusModel *)model {
+    
+    SDImageCache * imageCache = [SDImageCache sharedImageCache];
+    
+    //1 获取图片缓存时对应的key
+    NSString*cacheImageKey = [[SDWebImageManager sharedManager]cacheKeyForURL:model.url];
+    
+    //2 获取缓存的图片
+    return [imageCache  imageFromCacheForKey:cacheImageKey];
+}
+
+
+#pragma mark - dealloc
+- (void)dealloc {
+    NSLog(@"%@ is dealloc",self.class);
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 
 
 @end

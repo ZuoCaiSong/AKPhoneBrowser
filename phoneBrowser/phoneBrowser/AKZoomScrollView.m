@@ -107,8 +107,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     //移除imageView.layer上面的动画
     [self removePreviousFadeAnimationForLayer:self.imageView.layer];
     PhotoBrowserManager *mgr = [PhotoBrowserManager defaultManager];
-    if (!model.currentPageImageView) {
-        
+    if (!model.currentPageImageView) { //当前图片不存在,需要重新下载
         //1 .适配 iPhone X
         [self adjustIOS11];
         
@@ -118,20 +117,21 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         //3.重新赋值
         wself.maximumZoomScale = scrollViewMinZoomScale;
         
-        //4 或者占位图的的size
-        CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock([self getPlaceholdImageForModel:model], [NSIndexPath indexPathForItem:model.index inSection:0]) : CGSizeZero;
+        //4 获取占位图;
+        UIImage * placeholdImage = [self getPlaceholdImageForModel:model];
+        //4.1 或者占位图的的size
+        CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock(placeholdImage, [NSIndexPath indexPathForItem:model.index inSection:0]) : CGSizeZero;
         if (!CGSizeEqualToSize(size, CGSizeZero)) { //不为0
             //不明白,为何要动态修改frame
             self.imageView.frame = moveSizeToCenter(size);
-        }else{
-            [self resetScrollViewStatusWithImage:[self getPlaceholdImageForModel:model]];
+        }else{ //如果开发者没有传入占位图,自获取系统的占位图
+            [self resetScrollViewStatusWithImage:placeholdImage];
             
         }
+        //4.2显示占位图
+        self.imageView.image = placeholdImage;
         
-        self.imageView.image = [self getPlaceholdImageForModel:model];
-        
-        //通过模型开始加载数据
-        
+        //5 通过模型开始加载数据
         [model loadImageWithCompletedBlock:^(AKScrollViewStatusModel *loadModel, UIImage *image, NSData *data, NSError *error, BOOL finished, NSURL *imageURL) { //图片下载完成的回调
             //1.移除loading图
             [wself.loadingView removeFromSuperview];
@@ -167,7 +167,14 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     
 }
 
-#pragma mark - cho
+#pragma mark - 重新加载cell的数据
+
+/**
+ 下载完成 重新加载cell的数据展示
+ @param model model
+ @param image 下载好的image
+ @param data 下载好的imageData
+ */
 -(void) reloadCellDataWithModel:(AKScrollViewStatusModel *)model andImage:(UIImage*)image andImageData:(NSData *)data{
     
     PhotoBrowserManager * mgr = [PhotoBrowserManager defaultManager];
@@ -181,11 +188,12 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     
     if(!CGSizeEqualToSize(size, CGSizeZero)){ //不为0
         CGRect imageViewFrame = self.imageView.frame;
+        //利用占位图的size对应的frame 制作一个imageView的frame动画
         self.imageView.frame = moveSizeToCenter(size);
         [UIView animateWithDuration:0.25 animations:^{
             self.imageView.frame = imageViewFrame;
         }];
-    }else{ //占位图size 为 0
+    }else{ //占位图size 为 0 不存在frame动画,则自己匀速展示出来
         [self addFadeAnimationWithDuration:0.25 curve:UIViewAnimationCurveLinear ForLayer:self.imageView.layer];
     }
 
@@ -219,7 +227,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     }
     //正在移动的状态
     self.imageViewIsMoving = true;
-    self.imageView.frame = self.oldFrame;
+    self.imageView.frame = self.oldFrame; //从小格子变大
     [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState|UIViewAnimationOptionCurveEaseInOut animations:^{
         wself.imageView.frame = photoImageViewFrame; //可以理解为一个变大的动画
     } completion:^(BOOL finished) {
@@ -234,6 +242,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     self.imageView.image = nil;
     self.imageView.image = image;
     [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 -(void)layoutSubviews{
@@ -299,29 +308,35 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 
 
 #pragma mark - 重置scrollviewStatus
+/**
+*1 图片的高宽比 大于 屏幕的高宽比  则将图片的宽度置为屏幕宽,高度肯定大于屏幕 则 y值 为0;
+*2 图片的高宽比 小于 屏幕的高宽比  则将图片的宽度置为屏幕宽,高度肯定小于于屏幕 则 centerY = self.height / 2;
+*/
 -(void)resetScrollViewStatusWithImage:(UIImage *)image {
     
     //将缩放设置为初始化状态
     self.zoomScale = scrollViewMinZoomScale;
     
     self.imageView.frame = CGRectMake(0, 0, self.frame.size.width, 0);
-    //1 . 图片宽高比 > 屏幕宽高比
-    if (image.size.height / image.size.width > self.height /  self.width) {
-        CGFloat height = floor(image.size.height / image.size.width * self.width);
-        self.imageView.height = height;
-    }else{// 图片宽高比 < 屏幕宽高比
-        CGFloat height = image.size.height / image.size.width * self.width;
-        self.imageView.height = floor(height);
+    
+    //1 . 图片宽高比 > 屏幕宽高比 imageView.y = 0
+    CGFloat height = image.size.height / image.size.width * self.width;
+    self.imageView.height = floor(height);
+   
+    if (image.size.height / image.size.width < self.height /  self.width) {//2 图片宽高比 < 屏幕宽高比
         self.imageView.centerY = self.height / 2;
     }
     
+    //3 修正一下,相差不大,小于的时候,图片的高度则直接近视于相等
     if (self.imageView.height > self.height && self.imageView.height - self.height <= 1) {
         self.imageView.height = self.height;
     }
     
+    //4 contentSize 初始化
     self.contentSize = CGSizeMake(self.width, MAX(self.imageView.height, self.height));
     [self setContentOffset:CGPointZero];
     
+    //5.显示模式
     self.alwaysBounceVertical = (self.imageView.height > self.height);
     
     if (self.imageView.contentMode != UIViewContentModeScaleToFill) {

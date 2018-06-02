@@ -36,6 +36,13 @@
 @property(nonatomic,strong)UIImage  *errorImage; //如果LBLoadError.png这张图片不满意 可以修改这个属性替换
 
 /**
+ 是否需要预加载 default is YES
+ 每次LBPhotoBrowser -> did dismiss(消失)的时候,LBPhotoBrowserManager 会将 needPreloading 置为YES,
+ 故:如果需要修改该选项 需要每次弹出LBPhotoBrowser的时候 将needPreloading 置为 NO;
+ */
+@property(nonatomic,assign)BOOL needPreloading;
+
+/**
  返回一个单利
  @return 单利
  */

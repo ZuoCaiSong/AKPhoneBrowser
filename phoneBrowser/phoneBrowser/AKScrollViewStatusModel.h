@@ -19,7 +19,7 @@
 /**当前图片*/
 @property(nonatomic,strong) UIImage  * currentPageImage;
 
-/**url*/
+/**pic 对应的 url*/
 @property(nonatomic,strong) NSURL *url ;
 
 /**操作*/
@@ -47,6 +47,15 @@
 @property (nonatomic , copy)void (^loadImageCompletedBlock)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL);
 
 
+
+/**开始下载图片*/
+-(void)downloadImage;
+
+/**
+ 图片下载完成的回调
+
+ @param completedBlock 图片下载完成的回调
+ */
 - (void)loadImageWithCompletedBlock:(void (^)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL))completedBlock;
 
 @end
