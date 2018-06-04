@@ -13,4 +13,14 @@
 @property (nonatomic , weak)UIPageControl *pageControl;
 
 
+
+/**
+ 展示图片浏览
+
+ @param objs 数组objs 元素要么全是NSURL的链接,要么全是本地的uiimage
+ @param index selectIndex
+ */
+- (void)showImageViewsWithURLsOrImages:(NSMutableArray *)objs andSelectedIndex:(NSInteger)index;
+
+
 @end

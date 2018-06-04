@@ -28,7 +28,7 @@ static CGFloat const itemSpace = 20.0;
 /**collectionView的数据源*/
 @property (nonatomic , strong)NSMutableArray *dataArr;
 
-@property (nonatomic , strong)NSMutableArray *models;
+@property (nonatomic , strong)NSMutableArray <AKScrollViewStatusModel *> *models;
 
 @property (nonatomic , assign)BOOL isShowing;
 
@@ -44,7 +44,7 @@ static CGFloat const itemSpace = 20.0;
 
 @property (nonatomic , strong)NSMutableDictionary *loadingImageModelDic;
 
-/**预加载*/
+/**预加载里面的数据模型键值对为 index: model*/
 @property (nonatomic , strong)NSMutableDictionary *preloadingModelDic;
 
 /**预加载队列*/
@@ -61,6 +61,7 @@ static CGFloat const itemSpace = 20.0;
     }
     return _models;
 }
+
 
 -(NSMutableDictionary *)preloadingModelDic{
     if (!_loadingImageModelDic) {
@@ -134,7 +135,7 @@ static CGFloat const itemSpace = 20.0;
         //添加一个pan手势
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
         [self addGestureRecognizer:pan];
-        //[PhotoBrowserManager defaultManager].currentCollectionView = self.collectionView;
+        [PhotoBrowserManager defaultManager].currentCollectionView = self.collectionView;
         
         //预加载的串行队列
         _preloadingQueue = dispatch_queue_create("ak.photoBrowser", DISPATCH_QUEUE_SERIAL);
@@ -243,7 +244,45 @@ static CGFloat const itemSpace = 20.0;
         [self.pageControl removeFromSuperview];
     }];
     if (![PhotoBrowserManager defaultManager].needPreloading) { return;}
+    
+    //取消当前所有的下载任务
+    [self.loadingImageModelDic.allValues enumerateObjectsUsingBlock:^(AKScrollViewStatusModel * model, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (model.operation) {
+            [model.operation cancel];
+        }
+    }];
 }
+
+#pragma mark - 图片的加载,通过urls/ images 显示
+- (void)showImageViewsWithURLsOrImages:(NSMutableArray *)objs andSelectedIndex:(NSInteger)index{
+    _dataArr = objs;
+    if (_pageControl) {
+        [_pageControl removeFromSuperview];
+    }
+    self.pageControl.bottom = ScreenW - 50;
+    self.pageControl.hidden = (objs.count == 1);
+    //models 清楚模型, 初始化
+    [self.models removeAllObjects];
+    //重新构建 model
+    for(int i = 0 ; i < _dataArr.count; i++) {
+        AKScrollViewStatusModel *model = [[AKScrollViewStatusModel alloc]init];
+        model.showPopAnimation = (i==index); //是否当前需要pop显示出来
+        model.isShowing = (i==index);
+        if ([objs[i] isKindOfClass:[NSURL class]]) {
+            model.url = objs[i];
+        }else if ([objs[i] isKindOfClass:[UIImage class]]){
+            model.currentPageImage = objs[i];
+        }else{
+            NSAssert(false,@"objs 数据类型不匹配");
+        }
+        model.index = i;
+        [self.models addObject:model];
+    }
+    self.collectionView.alwaysBounceHorizontal = !(objs.count == 1); //一张图片的时候不进行 Bounce
+    [self.collectionView reloadData];
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:false];
+}
+
 
 #pragma mark - collectionView的数据源&代理
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -275,7 +314,7 @@ static CGFloat const itemSpace = 20.0;
     model.currentPageImage = model.currentPageImage ?: [self getCacheImageForModel:model];
     //需要展示动画的话,展示动画
     if(model.showPopAnimation){
-        [cell startPopAnimationWithModel:model completionBlock:^{
+        [cell startPopAnimationWithModel:model completionBlock:^{ //
             wself.isShowing = true;
             model.showPopAnimation = false;
             //递归调用一次
@@ -293,7 +332,7 @@ static CGFloat const itemSpace = 20.0;
     if ([self.dataArr.firstObject isKindOfClass:[UIImage class]]) return;
     
     //预加载
-    [self preloadImageWithModel:model];
+   // [self preloadImageWithModel:model];
 }
 
 
@@ -338,7 +377,38 @@ static CGFloat const itemSpace = 20.0;
     
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    CGFloat pageWidth = self.collectionView.width;
+    int page = floor((self.collectionView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    [self refreshStatusWithPage:page];
+    self.pageControl.currentPage = page;
+    [PhotoBrowserManager defaultManager].currentPage = page;
+    
+    AKPhotoCollectionViewCell *cell = (AKPhotoCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
+    if (![scrollView isKindOfClass:[UIScrollView class]]) {
+        PhotoBrowserManager.defaultManager.currentShowImageView = nil;
+    }
+       PhotoBrowserManager.defaultManager.currentShowImageView = cell.zoomScrollView.imageView;
+    
+}
 
+- (void)refreshStatusWithPage:(int)page {
+    if (page == self.pageControl.currentPage ) {
+        return;
+    }
+    [self changeModelOfCellInRow:page];
+}
+
+#pragma mark - 修改cell子控件的状态
+-(void)changeModelOfCellInRow:(int)row{
+    for (AKScrollViewStatusModel *model in self.models) {
+        model.isShowing = NO;
+    }
+    if (row >= 0 && row < self.models.count) {
+        AKScrollViewStatusModel *model = self.models[row];
+        model.isShowing = YES;
+    }
+}
 
 #pragma mark - 根据URL获取缓存的图片
 

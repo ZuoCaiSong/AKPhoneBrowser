@@ -90,10 +90,10 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         placeholdImage = mgr.placeholdImageCallBackBlock([NSIndexPath indexPathForItem:model.index inSection:0]);
         if (placeholdImage==nil) {
             //使用系统的占位图
-            placeholdImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"" ofType:nil]];
+            placeholdImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"LBLoading.png" ofType:nil]];
         }
     }else{
-        placeholdImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"" ofType:nil]];
+        placeholdImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle]pathForResource:@"LBLoading.png" ofType:nil]];
     }
     return placeholdImage;
 }
@@ -102,12 +102,10 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 -(void)setModel:(AKScrollViewStatusModel *)model{
     _model = model;
     weak_self;
-    model.currentPageImageView = self.imageView;
-    
     //移除imageView.layer上面的动画
     [self removePreviousFadeAnimationForLayer:self.imageView.layer];
     PhotoBrowserManager *mgr = [PhotoBrowserManager defaultManager];
-    if (!model.currentPageImageView) { //当前图片不存在,需要重新下载
+    if (!model.currentPageImage) { //当前图片不存在,需要重新下载
         //1 .适配 iPhone X
         [self adjustIOS11];
         

@@ -14,9 +14,13 @@
 #import "Config.h"
 
 /**通知名常量*/
-//
+
+/**将要消失的通知*/
 NSString * const AKImageViewWillDismissNoti = @"AKImageViewWillDismissNoti";
+
+/**已经消失的通知*/
 NSString * const AKImageViewDidDismissNoti = @"AKImageViewDidDismissNoti";
+
 NSString * const AKGifImageDownloadFinishedNoti = @"AKGifImageDownloadFinishedNoti";
 
 NSString * const AKLinkageInfoStyleKey = @"ak_style";

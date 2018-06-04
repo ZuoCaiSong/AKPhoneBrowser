@@ -8,9 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		8D253CB3524FA4C52AB92A76 /* libPods-phoneBrowser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA5BD820F2ED8E098C2FD7EB /* libPods-phoneBrowser.a */; };
+		B32D870420C5315900956A2B /* LBStyle1VC.m in Sources */ = {isa = PBXBuildFile; fileRef = B32D870320C5315900956A2B /* LBStyle1VC.m */; };
+		B32D870720C531C800956A2B /* LBBaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = B32D870620C531C800956A2B /* LBBaseController.m */; };
+		B32D870E20C531FF00956A2B /* LBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B32D870A20C531FF00956A2B /* LBModel.m */; };
+		B32D870F20C531FF00956A2B /* LBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B32D870D20C531FF00956A2B /* LBCell.m */; };
+		B32D871220C535DE00956A2B /* LBLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = B32D871020C535DD00956A2B /* LBLoading.png */; };
+		B32D871320C535DE00956A2B /* LBLoadError.png in Resources */ = {isa = PBXBuildFile; fileRef = B32D871120C535DD00956A2B /* LBLoadError.png */; };
 		B369DAED208F344F000D7FC9 /* AKZoomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAEB208F344E000D7FC9 /* AKZoomScrollView.m */; };
 		B369DAEF208F35C3000D7FC9 /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAEE208F35C3000D7FC9 /* Config.m */; };
 		B369DAF22090873D000D7FC9 /* UIView+LBFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAF02090873C000D7FC9 /* UIView+LBFrame.m */; };
+		B371DD7720C51792006CD30B /* AKPhotoWebItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B371DD7620C51792006CD30B /* AKPhotoWebItem.m */; };
+		B371DD7A20C517D5006CD30B /* AKPhotoLocalItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B371DD7920C517D5006CD30B /* AKPhotoLocalItem.m */; };
 		B3B9353D208C37CE00E418DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B9353C208C37CE00E418DC /* AppDelegate.m */; };
 		B3B93540208C37CE00E418DC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B9353F208C37CE00E418DC /* ViewController.m */; };
 		B3B93543208C37CE00E418DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3B93541208C37CE00E418DC /* Main.storyboard */; };
@@ -26,11 +34,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B32D870220C5315900956A2B /* LBStyle1VC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBStyle1VC.h; sourceTree = "<group>"; };
+		B32D870320C5315900956A2B /* LBStyle1VC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBStyle1VC.m; sourceTree = "<group>"; };
+		B32D870520C531C800956A2B /* LBBaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBBaseController.h; sourceTree = "<group>"; };
+		B32D870620C531C800956A2B /* LBBaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBBaseController.m; sourceTree = "<group>"; };
+		B32D870920C531FF00956A2B /* LBModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBModel.h; sourceTree = "<group>"; };
+		B32D870A20C531FF00956A2B /* LBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBModel.m; sourceTree = "<group>"; };
+		B32D870C20C531FF00956A2B /* LBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBCell.h; sourceTree = "<group>"; };
+		B32D870D20C531FF00956A2B /* LBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBCell.m; sourceTree = "<group>"; };
+		B32D871020C535DD00956A2B /* LBLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LBLoading.png; sourceTree = "<group>"; };
+		B32D871120C535DD00956A2B /* LBLoadError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LBLoadError.png; sourceTree = "<group>"; };
 		B369DAEB208F344E000D7FC9 /* AKZoomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKZoomScrollView.m; sourceTree = "<group>"; };
 		B369DAEC208F344F000D7FC9 /* AKZoomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKZoomScrollView.h; sourceTree = "<group>"; };
 		B369DAEE208F35C3000D7FC9 /* Config.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Config.m; sourceTree = "<group>"; };
 		B369DAF02090873C000D7FC9 /* UIView+LBFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+LBFrame.m"; sourceTree = "<group>"; };
 		B369DAF12090873D000D7FC9 /* UIView+LBFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+LBFrame.h"; sourceTree = "<group>"; };
+		B371DD7520C51792006CD30B /* AKPhotoWebItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKPhotoWebItem.h; sourceTree = "<group>"; };
+		B371DD7620C51792006CD30B /* AKPhotoWebItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKPhotoWebItem.m; sourceTree = "<group>"; };
+		B371DD7820C517D5006CD30B /* AKPhotoLocalItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKPhotoLocalItem.h; sourceTree = "<group>"; };
+		B371DD7920C517D5006CD30B /* AKPhotoLocalItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKPhotoLocalItem.m; sourceTree = "<group>"; };
 		B3B93538208C37CE00E418DC /* phoneBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = phoneBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3B9353B208C37CE00E418DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B3B9353C208C37CE00E418DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -88,6 +110,35 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		B32D870120C5315900956A2B /* Style1 */ = {
+			isa = PBXGroup;
+			children = (
+				B32D870520C531C800956A2B /* LBBaseController.h */,
+				B32D870620C531C800956A2B /* LBBaseController.m */,
+				B32D870220C5315900956A2B /* LBStyle1VC.h */,
+				B32D870320C5315900956A2B /* LBStyle1VC.m */,
+			);
+			path = Style1;
+			sourceTree = "<group>";
+		};
+		B32D870820C531FF00956A2B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B32D870920C531FF00956A2B /* LBModel.h */,
+				B32D870A20C531FF00956A2B /* LBModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B32D870B20C531FF00956A2B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B32D870C20C531FF00956A2B /* LBCell.h */,
+				B32D870D20C531FF00956A2B /* LBCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		B3B9352F208C37CD00E418DC = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +160,15 @@
 		B3B9353A208C37CE00E418DC /* phoneBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				B32D871120C535DD00956A2B /* LBLoadError.png */,
+				B32D871020C535DD00956A2B /* LBLoading.png */,
+				B32D870820C531FF00956A2B /* Model */,
+				B32D870B20C531FF00956A2B /* View */,
+				B32D870120C5315900956A2B /* Style1 */,
+				B371DD7520C51792006CD30B /* AKPhotoWebItem.h */,
+				B371DD7620C51792006CD30B /* AKPhotoWebItem.m */,
+				B371DD7820C517D5006CD30B /* AKPhotoLocalItem.h */,
+				B371DD7920C517D5006CD30B /* AKPhotoLocalItem.m */,
 				B3B9353B208C37CE00E418DC /* AppDelegate.h */,
 				B3B9353C208C37CE00E418DC /* AppDelegate.m */,
 				B3B9353E208C37CE00E418DC /* ViewController.h */,
@@ -199,7 +259,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B32D871220C535DE00956A2B /* LBLoading.png in Resources */,
 				B3B93548208C37CE00E418DC /* LaunchScreen.storyboard in Resources */,
+				B32D871320C535DE00956A2B /* LBLoadError.png in Resources */,
 				B3B93545208C37CE00E418DC /* Assets.xcassets in Resources */,
 				B3B93543208C37CE00E418DC /* Main.storyboard in Resources */,
 			);
@@ -234,15 +296,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				B369DAF22090873D000D7FC9 /* UIView+LBFrame.m in Sources */,
+				B371DD7A20C517D5006CD30B /* AKPhotoLocalItem.m in Sources */,
 				B3B93540208C37CE00E418DC /* ViewController.m in Sources */,
 				B3B93566208CE5EC00E418DC /* AKLoadingView.m in Sources */,
 				B3B9354B208C37CE00E418DC /* main.m in Sources */,
+				B32D870F20C531FF00956A2B /* LBCell.m in Sources */,
 				B3B93563208CDD0900E418DC /* AKScrollViewStatusModel.m in Sources */,
 				B3B93560208CDC4300E418DC /* AKTapDetectingImageView.m in Sources */,
 				B3B93553208C384600E418DC /* PhotoBrowserView.m in Sources */,
 				B369DAED208F344F000D7FC9 /* AKZoomScrollView.m in Sources */,
 				B3B9355A208CA5BA00E418DC /* AKPhotoCollectionViewCell.m in Sources */,
+				B32D870720C531C800956A2B /* LBBaseController.m in Sources */,
 				B369DAEF208F35C3000D7FC9 /* Config.m in Sources */,
+				B371DD7720C51792006CD30B /* AKPhotoWebItem.m in Sources */,
+				B32D870420C5315900956A2B /* LBStyle1VC.m in Sources */,
+				B32D870E20C531FF00956A2B /* LBModel.m in Sources */,
 				B3B93557208C3C8E00E418DC /* PhotoBrowserManager.m in Sources */,
 				B3B9353D208C37CE00E418DC /* AppDelegate.m in Sources */,
 			);

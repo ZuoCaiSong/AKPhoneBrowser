@@ -8,6 +8,10 @@
 
 #import "ViewController.h"
 
+#import "PhotoBrowserManager.h"
+
+#import "LBStyle1VC.h"
+
 @interface ViewController ()
 
 @end
@@ -16,9 +20,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
 }
 
+- (IBAction)gogogo:(id)sender {
+    
+    LBStyle1VC *svc1 = [[LBStyle1VC alloc]init];
+    [self.navigationController pushViewController:svc1 animated:YES];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
