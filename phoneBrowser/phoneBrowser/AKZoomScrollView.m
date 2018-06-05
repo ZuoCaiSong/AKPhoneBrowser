@@ -162,7 +162,6 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     }
     self.zoomScale = model.scale.floatValue;
     self.contentOffset = model.contentOffset;
-    
 }
 
 #pragma mark - 重新加载cell的数据

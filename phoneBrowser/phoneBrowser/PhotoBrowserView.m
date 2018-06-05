@@ -259,7 +259,7 @@ static CGFloat const itemSpace = 20.0;
     if (_pageControl) {
         [_pageControl removeFromSuperview];
     }
-    self.pageControl.bottom = ScreenW - 50;
+    self.pageControl.bottom = ScreenH - 50;
     self.pageControl.hidden = (objs.count == 1);
     //models 清楚模型, 初始化
     [self.models removeAllObjects];

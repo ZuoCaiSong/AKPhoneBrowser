@@ -9,7 +9,8 @@
 #import "AKScrollViewStatusModel.h"
 
 #import <SDWebImage/SDWebImageManager.h>
-#import <SDWebImage/UIImageView+WebCache.h>
+//#import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/FLAnimatedImageView+WebCache.h>
 
 #import "Config.h"
 #import "PhotoBrowserManager.h"
