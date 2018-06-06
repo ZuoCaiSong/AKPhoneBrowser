@@ -8,6 +8,9 @@
 
 #import "LBCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+
+#import <SDWebImage/FLAnimatedImageView+WebCache.h>
+
 @implementation LBCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {

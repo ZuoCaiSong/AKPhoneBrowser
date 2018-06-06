@@ -15,6 +15,6 @@ static  NSString *ID = @"lb.cell";
 @property (nonatomic , strong)NSMutableArray *imageViews;
 @property (nonatomic , strong)NSMutableArray *frames;
 @property (nonatomic , strong)LBModel *model;
-@property (nonatomic , copy)void (^callBack)(LBModel *cellModel, int tag);
+@property (nonatomic , copy)void (^callBack)(LBModel *cellModel, NSInteger tag);
 
 @end

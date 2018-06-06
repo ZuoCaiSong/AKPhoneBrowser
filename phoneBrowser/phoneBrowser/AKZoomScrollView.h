@@ -43,6 +43,6 @@
  */
 -(void)handleDoubleTap:(CGPoint)touchPoint;
 
-
+/**将图片盖在手机最外层*/
 - (void)startPopAnimationWithModel:(AKScrollViewStatusModel *)model completionBlock:(void(^)(void))completion;
 @end

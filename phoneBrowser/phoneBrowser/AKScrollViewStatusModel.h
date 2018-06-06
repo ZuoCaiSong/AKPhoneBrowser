@@ -44,11 +44,11 @@
 @property(nonatomic,strong)id  operation;
 
 
-/**是否是gif*/
-@property(nonatomic,assign)BOOL isGif;
-
-/**gif data*/
-@property(nonatomic,strong)NSData * gifData;
+///**是否是gif*/
+//@property(nonatomic,assign)BOOL isGif;
+//
+///**gif data*/
+//@property(nonatomic,strong)NSData * gifData;
 
 /**图片下载完成的回调*/
 @property (nonatomic , copy)void (^loadImageCompletedBlock)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL);

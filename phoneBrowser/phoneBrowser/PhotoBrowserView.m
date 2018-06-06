@@ -216,8 +216,6 @@ static CGFloat const itemSpace = 20.0;
 #pragma mark - 图片浏览器 消失
 -(void)dismissFromCell:(AKPhotoCollectionViewCell *)cell{
     [cell.zoomScrollView handleSingleTap:CGPointZero];
-  //  [LBPhotoBrowserManager defaultManager].navigationBar.hidden = YES;
-
 }
 
 #pragma mark - 取消拖拽,图片还原
@@ -230,7 +228,6 @@ static CGFloat const itemSpace = 20.0;
     } completion:^(BOOL finished) {
         cell.zoomScrollView.imageViewIsMoving = false;
         [cell.zoomScrollView layoutSubviews];
-//        [LBPhotoBrowserManager defaultManager].navigationBar.hidden = self.navBarStatusHidden;
     }];
 }
 
@@ -238,6 +235,7 @@ static CGFloat const itemSpace = 20.0;
 #pragma mark - 通知方法
 /**将要dismiss时候调用*/
 -(void)removePageControl{
+    
     [UIView animateWithDuration:0.25 animations:^{
         self.pageControl.alpha = 0;
     }completion:^(BOOL finished) {
@@ -259,7 +257,7 @@ static CGFloat const itemSpace = 20.0;
     if (_pageControl) {
         [_pageControl removeFromSuperview];
     }
-    self.pageControl.bottom = ScreenW - 50;
+    self.pageControl.bottom = ScreenH - 50;
     self.pageControl.hidden = (objs.count == 1);
     //models 清楚模型, 初始化
     [self.models removeAllObjects];

@@ -219,7 +219,6 @@ static PhotoBrowserManager * mgr = nil;
     [_photoBrowserView makeKeyAndVisible];
     
     return self;
-    
 }
 
 #pragma mark - 响应通知的方法

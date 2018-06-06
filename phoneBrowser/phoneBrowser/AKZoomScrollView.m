@@ -1,3 +1,4 @@
+
 //
 //  AKZoomScrollView.m
 //  phoneBrowser
@@ -128,9 +129,10 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         }
         //4.2显示占位图
         self.imageView.image = placeholdImage;
-        
-        //5 通过模型开始加载数据
-        [model loadImageWithCompletedBlock:^(AKScrollViewStatusModel *loadModel, UIImage *image, NSData *data, NSError *error, BOOL finished, NSURL *imageURL) { //图片下载完成的回调
+        self.imageView.model = model;
+        //5.加载图片
+        [self.imageView loadImageWithCompletedBlock:^(AKScrollViewStatusModel *loadModel, UIImage *image, NSData *data, NSError *error, BOOL finished, NSURL *imageURL) {
+            
             //1.移除loading图
             [wself.loadingView removeFromSuperview];
             wself.maximumZoomScale = scrollViewMaxZoomScale;
@@ -148,6 +150,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
                 }
             }
         }];
+       
     }else{ //已经存在了
         if (_loadingView) {
             [_loadingView removeFromSuperview];
@@ -157,12 +160,17 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
          when lowGifMemory = NO,if not clear this image ,gif image may have some thing wrong
          */
         self.imageView.image = nil;
-        self.imageView.image = model.currentPageImage;
+        self.imageView.animatedImage = nil;
+        if (model.currentPageImage.images.count > 0) { //为gif
+            self.imageView.animatedImage = [FLAnimatedImage animatedImageWithGIFData:[self getCacheImageDataForModel:model]];
+        }else{
+            self.imageView.image =  model.currentPageImage;
+        }
+        
         self.maximumZoomScale = scrollViewMaxZoomScale;
     }
     self.zoomScale = model.scale.floatValue;
     self.contentOffset = model.contentOffset;
-    
 }
 
 #pragma mark - 重新加载cell的数据
@@ -176,7 +184,11 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 -(void) reloadCellDataWithModel:(AKScrollViewStatusModel *)model andImage:(UIImage*)image andImageData:(NSData *)data{
     
     PhotoBrowserManager * mgr = [PhotoBrowserManager defaultManager];
-    self.imageView.image = model.currentPageImage;
+    if (model.currentPageImage.images.count > 0) { //为gif
+        self.imageView.animatedImage = [FLAnimatedImage animatedImageWithGIFData:[self getCacheImageDataForModel:model]];
+    }else{
+        self.imageView.image =  model.currentPageImage;
+    }
     
     //重置scrollview的状态
     [self resetScrollViewStatusWithImage:model.currentPageImage];
@@ -201,13 +213,13 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 - (void)startPopAnimationWithModel:(AKScrollViewStatusModel *)model completionBlock:(void (^)(void))completion{
     UIImage * currentImage = model.currentPageImage;
     _model = model;
-    if(!currentImage){
+    if(!currentImage){ //为空则给占位图
         currentImage = [self getPlaceholdImageForModel:model];
     }
-    [self showPopAnimationWithImage:currentImage WithCompletionBlock:completion];
+    [self showPopAnimationWithModel:model WithCompletionBlock:completion];
 }
 
-- (void)showPopAnimationWithImage:(UIImage *)image WithCompletionBlock:(void (^)(void))completion {
+- (void)showPopAnimationWithModel:(AKScrollViewStatusModel *)model WithCompletionBlock:(void (^)(void))completion {
     weak_self;
     PhotoBrowserManager *mgr = [PhotoBrowserManager defaultManager];
     //读取图片最开始的frame值,例如九宫格中某一张图片的frame
@@ -216,11 +228,11 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     self.oldFrame = rect;
     CGRect photoImageViewFrame;
     //获取展位图的size
-    CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock(image, [NSIndexPath indexPathForItem:self.model.index inSection:0]) : CGSizeZero;
+    CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock(model.currentPageImage, [NSIndexPath indexPathForItem:self.model.index inSection:0]) : CGSizeZero;
     if (!CGSizeEqualToSize(size, CGSizeZero) && !self.model.currentPageImage) {//展位图的size不为0
         photoImageViewFrame = moveSizeToCenter(size);
     }else {
-        [self resetScrollViewStatusWithImage:image];
+        [self resetScrollViewStatusWithImage:model.currentPageImage];
         photoImageViewFrame = self.imageView.frame;
     }
     //正在移动的状态
@@ -238,7 +250,12 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     
     // if not clear this image ,gif image may have some thing wrong
     self.imageView.image = nil;
-    self.imageView.image = image;
+    self.imageView.animatedImage = nil;
+    if (model.currentPageImage.images.count > 0) { //为gif
+        self.imageView.animatedImage = [FLAnimatedImage animatedImageWithGIFData:[self getCacheImageDataForModel:model]];
+    }else{
+        self.imageView.image =  model.currentPageImage;
+    }
     [self setNeedsLayout];
     [self layoutIfNeeded];
 }
@@ -493,4 +510,25 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         }
     }
 }
+
+#pragma mark - 根据URL获取缓存的图片的二进制数据
+
+- (NSData *)getCacheImageDataForModel:(AKScrollViewStatusModel *)model {
+    
+    SDImageCache * imageCache = [SDImageCache sharedImageCache];
+    
+    //1 获取图片缓存时对应的key
+    NSString*cacheImageKey = [[SDWebImageManager sharedManager]cacheKeyForURL:model.url];
+    
+    //2 获取缓存的图片路径
+    NSString *defaultPath = [imageCache defaultCachePathForKey:cacheImageKey];
+    NSData *data = [NSData dataWithContentsOfFile:defaultPath];
+    if (data) {
+        return data;
+    }else{
+        return  nil;
+    }
+}
+
+
 @end

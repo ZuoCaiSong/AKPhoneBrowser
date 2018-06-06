@@ -9,7 +9,7 @@
 #import "AKScrollViewStatusModel.h"
 
 #import <SDWebImage/SDWebImageManager.h>
-#import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/FLAnimatedImageView+WebCache.h>
 
 #import "Config.h"
 #import "PhotoBrowserManager.h"
@@ -38,6 +38,7 @@
     if(self.operation){
         return;
     }
+    
     self.operation = [[SDWebImageManager sharedManager]loadImageWithURL:self.url options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
         __block UIImage * hasDownImage = image; //已经下载好的图片
         dispatch_async(dispatch_get_main_queue(), ^{

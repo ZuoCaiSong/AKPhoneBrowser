@@ -52,7 +52,7 @@
     LBCell *cell = [tableView dequeueReusableCellWithIdentifier:ID forIndexPath:indexPath];
     cell.model = self.models[indexPath.row];
     __weak typeof(cell) wcell = cell;
-    [cell setCallBack:^(LBModel *cellModel, int tag) {
+    [cell setCallBack:^(LBModel *cellModel, NSInteger tag) {
         NSMutableArray *items = [[NSMutableArray alloc]init];
         for (int i = 0 ; i < cellModel.urls.count; i++) {
             LBURLModel *urlModel = cellModel.urls[i];
