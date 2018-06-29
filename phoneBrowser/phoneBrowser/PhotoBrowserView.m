@@ -34,12 +34,13 @@ static CGFloat const itemSpace = 20.0;
 
 @property (nonatomic , assign)BOOL navBarStatusHidden;
 
-/**拖拽时,手势开始是,手指在屏幕中的位置坐标*/
+/**拖拽时,手势开始时,手指在屏幕中的位置坐标*/
 @property (nonatomic , assign)CGPoint startPoint;
 
 /**图片的当前缩放比例*/
 @property (nonatomic , assign)CGFloat zoomScale;
 
+/**记录刚开始pan手势时,图片的center*/
 @property (nonatomic , assign)CGPoint startCenter;
 
 @property (nonatomic , strong)NSMutableDictionary *loadingImageModelDic;
