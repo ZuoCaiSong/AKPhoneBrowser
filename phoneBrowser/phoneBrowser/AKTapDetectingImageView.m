@@ -12,6 +12,7 @@
 #import "AKScrollViewStatusModel.h"
 
 #import <SDWebImage/FLAnimatedImageView+WebCache.h>
+#import "NSData+ImageContentType.h"
 
 @implementation AKTapDetectingImageView
 
@@ -31,32 +32,41 @@
     //正在下载
     
     
-//    if(self.operation){
-//        return;
-//    }
-    /*
-    self.operation = [[SDWebImageManager sharedManager]loadImageWithURL:self.url options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
-        __block UIImage * hasDownImage = image; //已经下载好的图片
+    if(self.operation){
+        return;
+    }
+    
+    self.operation = [[SDWebImageManager sharedManager]loadImageWithURL:self.model.url options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+       // __block UIImage * hasDownImage = image; //已经下载好的图片
+        SDImageFormat imageFormat = [NSData sd_imageFormatForImageData:data];
+        if (imageFormat == SDImageFormatGIF) {
+            self.animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
+            self.image = nil;
+        } else {
+            self.image = image;
+            self.animatedImage = nil;
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             wself.operation = nil;
             if (wself.loadImageCompletedBlock) {
-                wself.loadImageCompletedBlock(wself, image, data, error, finished, imageURL);
-            }
-            if (error) {
-                hasDownImage = [PhotoBrowserManager  defaultManager].errorImage;
-                //更新当前model图片的数据
-                wself.currentPageImage = hasDownImage;
-            }
-
+                wself.loadImageCompletedBlock(wself.model, image, data, error, finished, imageURL);
+             }
+//            if (error) {
+//                hasDownImage = [PhotoBrowserManager  defaultManager].errorImage;
+//                //更新当前model图片的数据
+//                wself.currentPageImage = hasDownImage;
+//            }
         });
     }];
-     */
-    
+     
+    /*
     [self sd_setImageWithURL:self.model.url placeholderImage:nil options:0 progress:nil completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (wself.loadImageCompletedBlock) {
             wself.loadImageCompletedBlock(wself.model, image, nil, error, true, imageURL);
         }
     }];
+     */
 }
 
 @end
