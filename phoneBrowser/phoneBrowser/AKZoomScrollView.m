@@ -329,6 +329,8 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 */
 -(void)resetScrollViewStatusWithImage:(UIImage *)image {
     
+    if(!image){return;}
+    
     //将缩放设置为初始化状态
     self.zoomScale = scrollViewMinZoomScale;
     
