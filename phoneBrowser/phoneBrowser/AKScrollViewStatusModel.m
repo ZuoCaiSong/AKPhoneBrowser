@@ -26,13 +26,14 @@
     return self;
 }
 
+/*
 - (void)loadImageWithCompletedBlock:(void (^)(AKScrollViewStatusModel *, UIImage *, NSData *, NSError *, BOOL, NSURL *))completedBlock{
     _loadImageCompletedBlock = completedBlock;
     
     [self downloadImage];
 }
 
-/**开始下载图片*/
+**开始下载图片
 -(void)downloadImage{
     weak_self;
     //正在下载
@@ -59,5 +60,21 @@
         });
     }];
 }
+*/
 
+
+/**图片下载完成的回调*
+@property (nonatomic , copy)void (^loadImageCompletedBlock)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL);
+
+
+**开始下载图片
+-(void)downloadImage;
+
+**
+ 图片下载完成的回调
+ 
+ @param completedBlock 图片下载完成的回调
+ 
+- (void)loadImageWithCompletedBlock:(void (^)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL))completedBlock;
+*/
 @end

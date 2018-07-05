@@ -309,6 +309,7 @@ static CGFloat const itemSpace = 20.0;
     weak_self;
     //获取数据模型
     AKScrollViewStatusModel * model = self.models[indexPath.row];
+    cell.model = model;
     
     model.currentPageImage = model.currentPageImage ?: [self getCacheImageForModel:model];
     //需要展示动画的话,展示动画
@@ -317,9 +318,10 @@ static CGFloat const itemSpace = 20.0;
             wself.isShowing = true;
             model.showPopAnimation = false;
             //递归调用一次
-            [wself collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+            //[wself collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
         }];
     }
+    /*
     if (wself.isShowing == false) { return;}
     //赋值模型
     cell.model = model;
@@ -329,7 +331,7 @@ static CGFloat const itemSpace = 20.0;
     }
     
     if ([self.dataArr.firstObject isKindOfClass:[UIImage class]]) return;
-    
+    */
     //预加载
    // [self preloadImageWithModel:model];
 }
@@ -370,7 +372,7 @@ static CGFloat const itemSpace = 20.0;
             AKScrollViewStatusModel *preloadingModel = wself.models[i];
             preloadingModel.currentPageImage = preloadingModel.currentPageImage ?:[wself getCacheImageForModel:preloadingModel];
             if (preloadingModel.currentPageImage) continue;
-            [preloadingModel downloadImage];
+            //[preloadingModel downloadImage];
         }
     });
     

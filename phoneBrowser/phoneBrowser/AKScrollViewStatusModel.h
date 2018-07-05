@@ -38,30 +38,10 @@
 /**偏移*/
 @property(nonatomic,assign) CGPoint  contentOffset ;
 
-
-
 /**操作, 有值表示对应的图片正在下载,没值可能是下载完成,或者还未开始下载*/
 @property(nonatomic,strong)id  operation;
 
 
-///**是否是gif*/
-//@property(nonatomic,assign)BOOL isGif;
-//
-///**gif data*/
-//@property(nonatomic,strong)NSData * gifData;
 
-/**图片下载完成的回调*/
-@property (nonatomic , copy)void (^loadImageCompletedBlock)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL);
-
-
-/**开始下载图片*/
--(void)downloadImage;
-
-/**
- 图片下载完成的回调
-
- @param completedBlock 图片下载完成的回调
- */
-- (void)loadImageWithCompletedBlock:(void (^)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL))completedBlock;
 
 @end
