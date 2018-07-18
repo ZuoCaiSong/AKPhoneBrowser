@@ -84,6 +84,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     return self;
 }
 
+#pragma mark - 获取placeHoldImage
 -(UIImage *)getPlaceholdImageForModel:(AKScrollViewStatusModel *)model{
     PhotoBrowserManager * mgr = [PhotoBrowserManager defaultManager];
     UIImage *placeholdImage = nil;
