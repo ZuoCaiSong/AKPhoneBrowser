@@ -301,16 +301,15 @@ static CGFloat const itemSpace = 20.0;
         [cell startPopAnimationWithModel:model completionBlock:^{ //
             wself.isShowing = true;
             model.showPopAnimation = false;
-//            //递归调用一次
-//            [wself collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+            [wself preloadImageWithModel:model];
         }];
     }
     
-   // if (wself.isShowing == false) { return;} //优先加载第一张
+    if (wself.isShowing == false) { return;} //优先加载第一张
     //如果传进来的本身是图片,则直接返回,无须提前下载
     if ([self.dataArr.firstObject isKindOfClass:[UIImage class]]) return;
     //预加载
-    //[self preloadImageWithModel:model];
+    [self preloadImageWithModel:model];
 }
 
 

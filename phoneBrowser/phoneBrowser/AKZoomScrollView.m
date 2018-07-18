@@ -14,6 +14,8 @@
 #import "AKLoadingView.h"
 
 #import <FLAnimatedImageView+WebCache.h> //可直接加载gif
+#import "NSData+ImageContentType.h"
+
 #import "Config.h"
 
 #import "PhotoBrowserManager.h"
@@ -143,7 +145,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
             for (id obj in cells) {
                 AKScrollViewStatusModel *visibleModel = [obj valueForKey:@"model"];
                 if (model.index == visibleModel.index) {
-                    [wself reloadCellDataWithModel:wself.model];
+                    [wself reloadCellDataWithModel:wself.model data:data];
                 }
             }
         }];
@@ -153,7 +155,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
             [_loadingView removeFromSuperview];
         }
         [self resetScrollViewStatusWithImage:[AKPhotoTool getCacheImageForUrl:model.url]]; //当前图片
-       
+        model.currentPageImage = [AKPhotoTool getCacheImageForUrl:model.url];
         self.imageView.image = nil;
         self.imageView.animatedImage = nil;
         if (model.currentPageImage.images.count > 0) { //为gif
@@ -169,15 +171,16 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 
 #pragma mark - 重新加载cell的数据
 
--(void) reloadCellDataWithModel:(AKScrollViewStatusModel *)model {
+-(void) reloadCellDataWithModel:(AKScrollViewStatusModel *)model data:(NSData *)data{
     
     PhotoBrowserManager * mgr = [PhotoBrowserManager defaultManager];
-    if (model.currentPageImage.images.count > 0) { //为gif
+    SDImageFormat imageFormat = [NSData sd_imageFormatForImageData:data];
+    if (imageFormat == SDImageFormatGIF) {
+        self.imageView.animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
         self.imageView.image = nil;
-        self.imageView.animatedImage = [FLAnimatedImage animatedImageWithGIFData:[self getCacheImageDataForModel:model]];
-    }else{
+    } else {
+        self.imageView.image = model.currentPageImage;
         self.imageView.animatedImage = nil;
-        self.imageView.image =  model.currentPageImage;
     }
     
     //重置scrollview的状态
