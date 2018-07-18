@@ -7,6 +7,7 @@
 //  Copyright © 2018年 阿K. All rights reserved.
 //
 
+/**imageView在创建的时候是没有大小的*/
 
 #import "AKZoomScrollView.h"
 
@@ -122,27 +123,24 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         //4.1 或者占位图的的size
         CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock(placeholdImage, [NSIndexPath indexPathForItem:model.index inSection:0]) : CGSizeZero;
         if (!CGSizeEqualToSize(size, CGSizeZero)) { //不为0
-            //不明白,为何要动态修改frame
+            //此时给图片的frame赋值
             self.imageView.frame = moveSizeToCenter(size);
-        }else{ //如果开发者没有传入占位图,自获取系统的占位图
+        }else{ //如果开发者没有传入占位图的size,用系统的占位图来确定图片的位置
             [self resetScrollViewStatusWithImage:placeholdImage];
             
         }
         //4.2显示占位图
         self.imageView.image = placeholdImage;
-        self.imageView.model = model;
+        self.imageView.model = model; //正式下载
         //5.加载图片
         [self.imageView loadImageWithCompletedBlock:^(AKScrollViewStatusModel *loadModel, UIImage *image, NSData *data, NSError *error, BOOL finished, NSURL *imageURL) {
             
             //1.移除loading图
             [wself.loadingView removeFromSuperview];
             wself.maximumZoomScale = scrollViewMaxZoomScale;
-            if (error) {
-                image = mgr.errorImage;
-            }
-            model.currentPageImage = image;
+            model.currentPageImage = error? mgr.errorImage :image;
             
-            //下载完成之后,只有当前cell正在展示 ---> 刷新
+            //下载完成之后,只有当前cell正在展示 ---> 刷新 ,为何要刷新,因为图片的高度默认是占位图的高度,没有更新,则需要刷新当前的cell
             NSArray * cells = [mgr.currentCollectionView visibleCells];
             for (id obj in cells) {
                 AKScrollViewStatusModel *visibleModel = [obj valueForKey:@"model"];
@@ -156,10 +154,8 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         if (_loadingView) {
             [_loadingView removeFromSuperview];
         }
-        [self resetScrollViewStatusWithImage:model.currentPageImage];
-        /**
-         when lowGifMemory = NO,if not clear this image ,gif image may have some thing wrong
-         */
+        [self resetScrollViewStatusWithImage:model.currentPageImage]; //当前图片
+       
         self.imageView.image = nil;
         self.imageView.animatedImage = nil;
         if (model.currentPageImage.images.count > 0) { //为gif
@@ -186,8 +182,10 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     
     PhotoBrowserManager * mgr = [PhotoBrowserManager defaultManager];
     if (model.currentPageImage.images.count > 0) { //为gif
+        self.imageView.image = nil;
         self.imageView.animatedImage = [FLAnimatedImage animatedImageWithGIFData:[self getCacheImageDataForModel:model]];
     }else{
+        self.imageView.animatedImage = nil;
         self.imageView.image =  model.currentPageImage;
     }
     
@@ -210,7 +208,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 
 }
 
-#pragma mark - 开始pop动画
+#pragma mark - 开始pop动画, 如果没有这个动画会很奇怪,图片突然被放大
 - (void)startPopAnimationWithModel:(AKScrollViewStatusModel *)model completionBlock:(void (^)(void))completion{
     UIImage * currentImage = model.currentPageImage;
     _model = model;

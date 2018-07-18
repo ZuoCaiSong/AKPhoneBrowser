@@ -45,11 +45,10 @@ static CGFloat const itemSpace = 20.0;
 
 @property (nonatomic , strong)NSMutableDictionary *loadingImageModelDic;
 
-/**预加载里面的数据模型键值对为 index: model*/
-@property (nonatomic , strong)NSMutableDictionary *preloadingModelDic;
+/**预加载里面的数据模型键值对为 index: operation*/
+@property (nonatomic , strong)NSMutableDictionary <NSNumber*,NSOperation*>*preloadingModelDic;
 
-/**预加载队列*/
-@property (strong, nonatomic) dispatch_queue_t preloadingQueue;
+
 
 @end
 
@@ -137,10 +136,7 @@ static CGFloat const itemSpace = 20.0;
         UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(didPan:)];
         [self addGestureRecognizer:pan];
         [PhotoBrowserManager defaultManager].currentCollectionView = self.collectionView;
-        
-        //预加载的串行队列
-        _preloadingQueue = dispatch_queue_create("ak.photoBrowser", DISPATCH_QUEUE_SERIAL);
-        
+    
         //标志位
         _isShowing = NO;
     }
@@ -309,6 +305,7 @@ static CGFloat const itemSpace = 20.0;
     weak_self;
     //获取数据模型
     AKScrollViewStatusModel * model = self.models[indexPath.row];
+    cell.model = model;
     
     model.currentPageImage = model.currentPageImage ?: [self getCacheImageForModel:model];
     //需要展示动画的话,展示动画
@@ -317,9 +314,10 @@ static CGFloat const itemSpace = 20.0;
             wself.isShowing = true;
             model.showPopAnimation = false;
             //递归调用一次
-            [wself collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
+            //[wself collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
         }];
     }
+    /*
     if (wself.isShowing == false) { return;}
     //赋值模型
     cell.model = model;
@@ -329,9 +327,9 @@ static CGFloat const itemSpace = 20.0;
     }
     
     if ([self.dataArr.firstObject isKindOfClass:[UIImage class]]) return;
-    
+    */
     //预加载
-   // [self preloadImageWithModel:model];
+    [self preloadImageWithModel:model];
 }
 
 
@@ -339,41 +337,27 @@ static CGFloat const itemSpace = 20.0;
 #pragma mark - 预加载图片
 /**只提前加载前后两张图片*/
 -(void)preloadImageWithModel:(AKScrollViewStatusModel *)model{
-    weak_self;
+   // weak_self;
+    
     //不需要预加载直接return
     if (![PhotoBrowserManager defaultManager].needPreloading) return;
-    //异步并发队列
-    dispatch_async(self.preloadingQueue, ^{
-        int leftIndex = model.index -1>=0 ?  model.index -1 : 0;
-        int rightIndex = model.index + 1 < wself.models.count ? model.index+1 :  (int)(wself.models.count - 1) ;
-        
-        //wself.loadingImageModels 新计算出的需要加载的 -- > 如果个原来的没有重合的 --> 取消
-        [wself.preloadingModelDic removeAllObjects];
-        wself.preloadingModelDic[@(leftIndex)] = @1;
-        wself.preloadingModelDic[@(model.index)] = @1;
-        wself.preloadingModelDic[@(rightIndex)] = @1;
-        
-        for (NSNumber * indexNum in wself.preloadingModelDic.allKeys) {
-            AKScrollViewStatusModel * loadingModel = wself.loadingImageModelDic[indexNum];
-            if (loadingModel.operation) {
-                [loadingModel.operation cancel];
-                loadingModel.operation = nil;
-            }
-        }
-        [wself.loadingImageModelDic removeAllObjects];
-        
-        for (int i = leftIndex; i<=rightIndex; i++) {
-            AKScrollViewStatusModel * loadingModel = self.models[i];
-            wself.loadingImageModelDic[@(i)] = loadingModel;
-            if (model.index == i) continue;
-            //预加载部分
-            AKScrollViewStatusModel *preloadingModel = wself.models[i];
-            preloadingModel.currentPageImage = preloadingModel.currentPageImage ?:[wself getCacheImageForModel:preloadingModel];
-            if (preloadingModel.currentPageImage) continue;
-            [preloadingModel downloadImage];
-        }
-    });
     
+    int leftIndex = model.index -1>=0 ?  model.index -1 : 0;
+    int rightIndex = model.index + 1 < self.models.count ? model.index+1 :  (int)(self.models.count - 1) ;
+    NSLog(@"index1:%d",rightIndex);
+
+    NSOperation * right_Operation = [[SDWebImageManager sharedManager]loadImageWithURL:self.models[rightIndex].url options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+        NSLog(@"index2:%d",rightIndex);
+       // [self.preloadingModelDic removeObjectForKey:@(rightIndex)];
+    }];
+     self.preloadingModelDic[@(rightIndex)] = right_Operation;
+    
+    NSOperation * left_Operation = [[SDWebImageManager sharedManager]loadImageWithURL:self.models[leftIndex].url options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+        
+    }];
+    self.preloadingModelDic[@(leftIndex)] = left_Operation;
+
+   
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
