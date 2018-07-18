@@ -15,8 +15,6 @@
 
 @property(nonatomic,strong)AKScrollViewStatusModel *model;
 
-@property(nonatomic,strong)id  operation;
-
 /**图片下载完成的回调*/
 @property (nonatomic , copy)void (^loadImageCompletedBlock)(AKScrollViewStatusModel *loadModel,UIImage *image, NSData *data, NSError *  error, BOOL finished, NSURL *imageURL);
 

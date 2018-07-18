@@ -12,7 +12,8 @@
 
 @property (nonatomic , weak)UIPageControl *pageControl;
 
-
+/**预加载里面的数据模型键值对为 index: operation*/
+@property (nonatomic , strong)NSMutableDictionary <NSNumber*,NSOperation*>*preloadingOperationDic;
 
 /**
  展示图片浏览

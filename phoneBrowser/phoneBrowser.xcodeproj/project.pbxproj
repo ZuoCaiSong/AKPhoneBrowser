@@ -12,13 +12,14 @@
 		B32D870720C531C800956A2B /* LBBaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = B32D870620C531C800956A2B /* LBBaseController.m */; };
 		B32D870E20C531FF00956A2B /* LBModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B32D870A20C531FF00956A2B /* LBModel.m */; };
 		B32D870F20C531FF00956A2B /* LBCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B32D870D20C531FF00956A2B /* LBCell.m */; };
-		B32D871220C535DE00956A2B /* LBLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = B32D871020C535DD00956A2B /* LBLoading.png */; };
-		B32D871320C535DE00956A2B /* LBLoadError.png in Resources */ = {isa = PBXBuildFile; fileRef = B32D871120C535DD00956A2B /* LBLoadError.png */; };
 		B369DAED208F344F000D7FC9 /* AKZoomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAEB208F344E000D7FC9 /* AKZoomScrollView.m */; };
 		B369DAEF208F35C3000D7FC9 /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAEE208F35C3000D7FC9 /* Config.m */; };
 		B369DAF22090873D000D7FC9 /* UIView+LBFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = B369DAF02090873C000D7FC9 /* UIView+LBFrame.m */; };
 		B371DD7720C51792006CD30B /* AKPhotoWebItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B371DD7620C51792006CD30B /* AKPhotoWebItem.m */; };
 		B371DD7A20C517D5006CD30B /* AKPhotoLocalItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B371DD7920C517D5006CD30B /* AKPhotoLocalItem.m */; };
+		B39318A420FEE4D8006F30B1 /* AKPhotoTool.m in Sources */ = {isa = PBXBuildFile; fileRef = B39318A320FEE4D8006F30B1 /* AKPhotoTool.m */; };
+		B39318B320FF4592006F30B1 /* LBLoadError.png in Resources */ = {isa = PBXBuildFile; fileRef = B39318B220FF4592006F30B1 /* LBLoadError.png */; };
+		B39318B520FF45A6006F30B1 /* LBLoading.png in Resources */ = {isa = PBXBuildFile; fileRef = B39318B420FF45A6006F30B1 /* LBLoading.png */; };
 		B3B9353D208C37CE00E418DC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B9353C208C37CE00E418DC /* AppDelegate.m */; };
 		B3B93540208C37CE00E418DC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B3B9353F208C37CE00E418DC /* ViewController.m */; };
 		B3B93543208C37CE00E418DC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B3B93541208C37CE00E418DC /* Main.storyboard */; };
@@ -42,8 +43,6 @@
 		B32D870A20C531FF00956A2B /* LBModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBModel.m; sourceTree = "<group>"; };
 		B32D870C20C531FF00956A2B /* LBCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBCell.h; sourceTree = "<group>"; };
 		B32D870D20C531FF00956A2B /* LBCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBCell.m; sourceTree = "<group>"; };
-		B32D871020C535DD00956A2B /* LBLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LBLoading.png; sourceTree = "<group>"; };
-		B32D871120C535DD00956A2B /* LBLoadError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LBLoadError.png; sourceTree = "<group>"; };
 		B369DAEB208F344E000D7FC9 /* AKZoomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKZoomScrollView.m; sourceTree = "<group>"; };
 		B369DAEC208F344F000D7FC9 /* AKZoomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKZoomScrollView.h; sourceTree = "<group>"; };
 		B369DAEE208F35C3000D7FC9 /* Config.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Config.m; sourceTree = "<group>"; };
@@ -53,6 +52,10 @@
 		B371DD7620C51792006CD30B /* AKPhotoWebItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKPhotoWebItem.m; sourceTree = "<group>"; };
 		B371DD7820C517D5006CD30B /* AKPhotoLocalItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKPhotoLocalItem.h; sourceTree = "<group>"; };
 		B371DD7920C517D5006CD30B /* AKPhotoLocalItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKPhotoLocalItem.m; sourceTree = "<group>"; };
+		B39318A220FEE4D8006F30B1 /* AKPhotoTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AKPhotoTool.h; sourceTree = "<group>"; };
+		B39318A320FEE4D8006F30B1 /* AKPhotoTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AKPhotoTool.m; sourceTree = "<group>"; };
+		B39318B220FF4592006F30B1 /* LBLoadError.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LBLoadError.png; sourceTree = "<group>"; };
+		B39318B420FF45A6006F30B1 /* LBLoading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LBLoading.png; sourceTree = "<group>"; };
 		B3B93538208C37CE00E418DC /* phoneBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = phoneBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3B9353B208C37CE00E418DC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B3B9353C208C37CE00E418DC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -160,8 +163,8 @@
 		B3B9353A208C37CE00E418DC /* phoneBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				B32D871120C535DD00956A2B /* LBLoadError.png */,
-				B32D871020C535DD00956A2B /* LBLoading.png */,
+				B39318B420FF45A6006F30B1 /* LBLoading.png */,
+				B39318B220FF4592006F30B1 /* LBLoadError.png */,
 				B32D870820C531FF00956A2B /* Model */,
 				B32D870B20C531FF00956A2B /* View */,
 				B32D870120C5315900956A2B /* Style1 */,
@@ -183,6 +186,8 @@
 				B3B93565208CE5EC00E418DC /* AKLoadingView.m */,
 				B3B93561208CDD0900E418DC /* AKScrollViewStatusModel.h */,
 				B3B93562208CDD0900E418DC /* AKScrollViewStatusModel.m */,
+				B39318A220FEE4D8006F30B1 /* AKPhotoTool.h */,
+				B39318A320FEE4D8006F30B1 /* AKPhotoTool.m */,
 				B3B9353B208C37CE00E418DC /* AppDelegate.h */,
 				B3B9353C208C37CE00E418DC /* AppDelegate.m */,
 				B3B9353E208C37CE00E418DC /* ViewController.h */,
@@ -259,9 +264,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B32D871220C535DE00956A2B /* LBLoading.png in Resources */,
+				B39318B520FF45A6006F30B1 /* LBLoading.png in Resources */,
 				B3B93548208C37CE00E418DC /* LaunchScreen.storyboard in Resources */,
-				B32D871320C535DE00956A2B /* LBLoadError.png in Resources */,
+				B39318B320FF4592006F30B1 /* LBLoadError.png in Resources */,
 				B3B93545208C37CE00E418DC /* Assets.xcassets in Resources */,
 				B3B93543208C37CE00E418DC /* Main.storyboard in Resources */,
 			);
@@ -296,6 +301,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B369DAF22090873D000D7FC9 /* UIView+LBFrame.m in Sources */,
+				B39318A420FEE4D8006F30B1 /* AKPhotoTool.m in Sources */,
 				B371DD7A20C517D5006CD30B /* AKPhotoLocalItem.m in Sources */,
 				B3B93540208C37CE00E418DC /* ViewController.m in Sources */,
 				B3B93566208CE5EC00E418DC /* AKLoadingView.m in Sources */,

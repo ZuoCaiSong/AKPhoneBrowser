@@ -54,8 +54,6 @@
 @property(nonatomic,assign)BOOL needPreloading;
 
 
-// 当前图片浏览器正在展示的imageView
-@property (nonatomic , strong)UIImageView *currentShowImageView;
 
 /**
  返回一个单利

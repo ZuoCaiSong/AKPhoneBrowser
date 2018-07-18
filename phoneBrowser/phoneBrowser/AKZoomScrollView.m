@@ -18,6 +18,8 @@
 
 #import "PhotoBrowserManager.h"
 
+#import "AKPhotoTool.h"
+
 //内联函数 ,通过size,移动到中间
 static inline CGRect moveSizeToCenter(CGSize size) {
     return CGRectMake((ScreenW - size.width) / 2.0, (ScreenH - size.height)/2.0, size.width, size.height);
@@ -40,26 +42,23 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 
 @end
 
-
 @implementation AKZoomScrollView
 
 
 #pragma mark - 懒加载区域
 -(AKTapDetectingImageView *)imageView{
     if (!_imageView) {
-        AKTapDetectingImageView *imageView  = [[AKTapDetectingImageView alloc]init];
-        [self addSubview:imageView];
-        _imageView = imageView;
+        _imageView  = [[AKTapDetectingImageView alloc]init];
+        [self addSubview:_imageView];
     }
     return _imageView;
 }
 
 - (AKLoadingView *)loadingView {
     if (!_loadingView) {
-        AKLoadingView *loadingView = [[AKLoadingView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
-        loadingView.frame = moveSizeToCenter(loadingView.frame.size);//居中显示
-        [self addSubview:loadingView];
-        _loadingView = loadingView;
+        _loadingView = [[AKLoadingView alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+        _loadingView.frame = moveSizeToCenter(_loadingView.frame.size);//居中显示
+        [self addSubview:_loadingView];
     }
     return _loadingView;
 }
@@ -108,20 +107,20 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
     //移除imageView.layer上面的动画
     [self removePreviousFadeAnimationForLayer:self.imageView.layer];
     PhotoBrowserManager *mgr = [PhotoBrowserManager defaultManager];
-    if (!model.currentPageImage) { //当前图片不存在,需要重新下载
+    if (![AKPhotoTool getCacheImageForUrl:_model.url]) { //当前图片不存在,需要重新下载
         //1 .适配 iPhone X
         [self adjustIOS11];
         
         //2 . add loading 框
         [self loadingView];
         
-        //3.重新赋值
+        //3.下载过程中不让他放大
         wself.maximumZoomScale = scrollViewMinZoomScale;
         
         //4 获取占位图;
-        UIImage * placeholdImage = [self getPlaceholdImageForModel:model];
+        UIImage * placeholdImage = [self getPlaceholdImageForModel:_model];
         //4.1 或者占位图的的size
-        CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock(placeholdImage, [NSIndexPath indexPathForItem:model.index inSection:0]) : CGSizeZero;
+        CGSize size = mgr.placeholdImageSizeBlock ? mgr.placeholdImageSizeBlock(placeholdImage, [NSIndexPath indexPathForItem:_model.index inSection:0]) : CGSizeZero;
         if (!CGSizeEqualToSize(size, CGSizeZero)) { //不为0
             //此时给图片的frame赋值
             self.imageView.frame = moveSizeToCenter(size);
@@ -131,21 +130,20 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         }
         //4.2显示占位图
         self.imageView.image = placeholdImage;
-        self.imageView.model = model; //正式下载
+        self.imageView.model = _model; //正式下载
         //5.加载图片
         [self.imageView loadImageWithCompletedBlock:^(AKScrollViewStatusModel *loadModel, UIImage *image, NSData *data, NSError *error, BOOL finished, NSURL *imageURL) {
             
             //1.移除loading图
             [wself.loadingView removeFromSuperview];
-            wself.maximumZoomScale = scrollViewMaxZoomScale;
-            model.currentPageImage = error? mgr.errorImage :image;
-            
+            wself.maximumZoomScale = scrollViewMaxZoomScale; //可放大
+            self.model.currentPageImage = error? [PhotoBrowserManager  defaultManager].errorImage :image;
             //下载完成之后,只有当前cell正在展示 ---> 刷新 ,为何要刷新,因为图片的高度默认是占位图的高度,没有更新,则需要刷新当前的cell
             NSArray * cells = [mgr.currentCollectionView visibleCells];
             for (id obj in cells) {
                 AKScrollViewStatusModel *visibleModel = [obj valueForKey:@"model"];
                 if (model.index == visibleModel.index) {
-                    [wself reloadCellDataWithModel:model andImage:image andImageData:data];
+                    [wself reloadCellDataWithModel:wself.model];
                 }
             }
         }];
@@ -154,7 +152,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         if (_loadingView) {
             [_loadingView removeFromSuperview];
         }
-        [self resetScrollViewStatusWithImage:model.currentPageImage]; //当前图片
+        [self resetScrollViewStatusWithImage:[AKPhotoTool getCacheImageForUrl:model.url]]; //当前图片
        
         self.imageView.image = nil;
         self.imageView.animatedImage = nil;
@@ -163,7 +161,6 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
         }else{
             self.imageView.image =  model.currentPageImage;
         }
-        
         self.maximumZoomScale = scrollViewMaxZoomScale;
     }
     self.zoomScale = model.scale.floatValue;
@@ -172,13 +169,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 
 #pragma mark - 重新加载cell的数据
 
-/**
- 下载完成 重新加载cell的数据展示
- @param model model
- @param image 下载好的image
- @param data 下载好的imageData
- */
--(void) reloadCellDataWithModel:(AKScrollViewStatusModel *)model andImage:(UIImage*)image andImageData:(NSData *)data{
+-(void) reloadCellDataWithModel:(AKScrollViewStatusModel *)model {
     
     PhotoBrowserManager * mgr = [PhotoBrowserManager defaultManager];
     if (model.currentPageImage.images.count > 0) { //为gif
@@ -368,9 +359,7 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 
 -(void)scrollViewDidZoom:(UIScrollView *)scrollView{
     
-    if (self.model.isShowing == false) {
-        return;
-    }
+    if (self.model.isShowing == false) { return; }
     self.model.scale = @(scrollView.zoomScale);
     [self setNeedsLayout];
     [self layoutIfNeeded];
@@ -378,18 +367,14 @@ static CGFloat scrollViewMaxZoomScale = 3.0;
 }
 
 -(void) scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale{
-    if (scrollView.minimumZoomScale != scale) {
-        return;
-    }
+    if (scrollView.minimumZoomScale != scale) {return; }
     [self setZoomScale:self.minimumZoomScale animated:true];
     [self setNeedsLayout];
     [self layoutIfNeeded];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    if (self.model.isShowing == false) {
-        return;
-    }
+    if (self.model.isShowing == false) {  return; }
     self.model.contentOffset = scrollView.contentOffset;
 }
 

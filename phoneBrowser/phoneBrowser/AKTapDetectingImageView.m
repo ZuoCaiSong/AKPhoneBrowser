@@ -11,9 +11,12 @@
 
 #import "AKScrollViewStatusModel.h"
 #import "PhotoBrowserManager.h"
+#import "PhotoBrowserView.h"
 
 #import <SDWebImage/FLAnimatedImageView+WebCache.h>
 #import "NSData+ImageContentType.h"
+
+#import "AKPhotoTool.h"
 
 @implementation AKTapDetectingImageView
 
@@ -30,30 +33,32 @@
 /**开始下载图片*/
 -(void)downloadImage{
     weak_self;
-    //正在下载
-    if(self.operation){ return;}
+   
+    //移除下载任务
     
-    self.operation = [[SDWebImageManager sharedManager]loadImageWithURL:self.model.url options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
-        SDImageFormat imageFormat = [NSData sd_imageFormatForImageData:data];
-        if (imageFormat == SDImageFormatGIF) {
-            self.animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
-            self.image = nil;
-        } else {
-            self.image = image;
-            self.animatedImage = nil;
-        }
+    NSOperation *  operation = [[SDWebImageManager sharedManager]loadImageWithURL:self.model.url options:0 progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL) {
+       
+        
+        //移除下载任务
+        [PhotoBrowserManager.defaultManager.photoBrowserView.preloadingOperationDic removeObjectForKey: @(self.model.index)];
+        
+//        SDImageFormat imageFormat = [NSData sd_imageFormatForImageData:data];
+//        if (imageFormat == SDImageFormatGIF) {
+//            self.animatedImage = [FLAnimatedImage animatedImageWithGIFData:data];
+//            self.image = nil;
+//        } else {
+//            self.image = image;
+//            self.animatedImage = nil;
+//        }
         dispatch_async(dispatch_get_main_queue(), ^{
-            wself.operation = nil;
+           
             if (wself.loadImageCompletedBlock) {
                 wself.loadImageCompletedBlock(wself.model, image, data, error, finished, imageURL);
              }
-            if (error) {
-              UIImage*  hasDownImage = [PhotoBrowserManager  defaultManager].errorImage;
-                //更新当前model图片的数据
-               wself.model.currentPageImage = hasDownImage;
-            }
         });
     }];
+    
+    PhotoBrowserManager.defaultManager.photoBrowserView.preloadingOperationDic[ @(self.model.index)] = operation;
 }
 
 
